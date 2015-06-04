@@ -68,12 +68,13 @@ def formulario():
     codigos = [str(x[0]) for x in g.db.execute('SELECT DISTINCT ds||"-"||ii||"-"||_is as codigo from datos_urracas;').fetchall()]
     
     if request.method == 'POST' and 'apadrinar' not in request.form.keys():
-        fallo = f.registrar_avistamiento()
+        actividad, fallo = f.registrar_avistamiento()
         if fallo is True:
             return redirect(url_for('formulario'))
-        apadrinar = f.comprobar_apadrinar()
-        if apadrinar is True:
-            return redirect(url_for('apadrinar'))
+        if actividad != 'muerta':
+            apadrinar = f.comprobar_apadrinar()
+            if apadrinar is True:
+                return redirect(url_for('apadrinar'))
     elif request.method == 'POST' and 'apadrinar' in request.form.keys():
         exito = f.apadrinar()
         if exito is False:

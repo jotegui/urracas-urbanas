@@ -110,7 +110,7 @@ def nueva_alta():
         flash("Gracias, el nuevo usuario ha sido registrado en la base de datos. Para acceder al sistema, introduce tu correo electrónico, pulsa sobre la imagen del ave que seleccionaste y luego pulsa en \"Entrar\".".decode('utf-8'))
         
         # Email a admins
-        destino = "MASTER"
+        destino = "ADMINISTRADORES"
         asunto = "Nueva alta en el sistema"
         cuerpo = "Un nuevo usuario ha sido dado de alta en el sistema:\n\nNombre: {0}\nEmail: {1}".format(nombre.encode('utf-8'), email)
         enviar_email(destino, asunto, cuerpo)
@@ -162,6 +162,17 @@ def registrar_avistamiento():
     lectura = request.form['lectura']
     ip = request.remote_addr
     
+    # Email a administradores si el ave esta muerta
+    if actividad == 'muerta':
+        destino = "ADMINISTRADORES"
+        asunto = "Ave encontrada muerta"
+        cuerpo = "El usuario {0} ha encontrado un ave muerta en el lugar ({1}, {2}) y fecha {3}".format(session['email'], lat, lng, momento)
+        if conAnillas == 1:
+            cuerpo += "\n\nEl ave presentaba las siguientes anillas de colores:\nDerecha Superior: {0}\nDerecha Media: {1}\nIzquierda Inferior: {2}\nIzquierda Superior: {3}".format(RT, RM, LB, LT)
+        else:
+            cuerpo += "\n\nEl ave no presentaba anillas de colores."
+        enviar_email(destino, asunto, cuerpo)
+    
     # LOCAL INSERT
     pre_insert_count = g.db.execute('select count(*) from avistamientos;').fetchone()[0]
     g.db.execute('INSERT INTO avistamientos (usuarioId, momento, lat, lng, conAnillas, cuantas, RT, LB, LT, extraAnillas, RM, actividad, lectura, IP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -177,7 +188,7 @@ def registrar_avistamiento():
     res = cartodb_api(q)
     g.db.commit()
     
-    return False
+    return actividad, False
 
 
 def comprobar_apadrinar():
@@ -221,6 +232,13 @@ def apadrinar():
         g.db.commit()
         session.pop('idcolor', None)
         flash('Gracias. Tu petición de apadrinamiento ha sido registrada. En cuanto veamos si el nombre es adecuado, se lo asignaremos a la urraca'.decode('utf-8'))
+        
+        # Email a administradores
+        destino = "ADMINISTRADORES"
+        asunto = "Nuevo apadrinamiento pendiente de aprobar"
+        cuerpo = "El usuario {0} ha solicitado apadrinar un ave y propone el nombre {1}.\n\nPor favor, accede a la aplicación para aprobar o denegar este apadrinamiento.".format(session['email'], nombre.encode('utf-8'))
+        enviar_email(destino, asunto, cuerpo)
+        
     return True
     
     

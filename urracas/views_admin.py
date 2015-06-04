@@ -20,11 +20,39 @@ def aprobar():
         if 'id' in request.form and 'accion' in request.form:
             nombre = g.db.execute("select nombre from apadrinamientos where id=?", [request.form['id']]).fetchone()[0]
             if request.form['accion'] == 'aprobar':
-                g.db.execute("update apadrinamientos set validado=1 where id=?", [request.form['id']])
                 flash("Nombre validado")
+                
+                # Email a usuario
+                destino = g.db.execute('select email from usuarios where id in (select usuarioId from apadrinamientos where id=?)', [request.form['id']]).fetchone()[0]
+                asunto = "Apadrinamiento aceptado"
+                cuerpo = """Hola.
+
+Hace poco intentaste apadrinar a una urraca con el nombre {0}. Los administradores han evaluado tu solicitud y la han aprobado. ¡Enhorabuena!
+
+Gracias por tu participación. Un saludo,
+El equipo del proyecto Urracas Urbanas
+""".format(nombre.encode('utf-8'))
+
+                f.enviar_email(destino, asunto, cuerpo)
+                g.db.execute("update apadrinamientos set validado=1 where id=?", [request.form['id']])
+                
             elif request.form['accion'] == 'denegar':
-                g.db.execute("delete from apadrinamientos where id=?", [request.form['id']])
                 flash("Nombre eliminado")
+                
+                # Email a usuario
+                destino = g.db.execute('select email from usuarios where id in (select usuarioId from apadrinamientos where id=?)', [request.form['id']]).fetchone()[0]
+                asunto = "Apadrinamiento denegado"
+                cuerpo = """Hola.
+
+Hace poco intentaste apadrinar a una urraca con el nombre {0}. Lamentablemente, los administradores han evaluado tu solicitud y no la consideran adecuada. Procura poner un nombre más sencillo la próxima vez.
+
+Gracias por tu participación. Un saludo,
+El equipo del proyecto Urracas Urbanas
+""".format(nombre.encode('utf-8'))
+
+                f.enviar_email(destino, asunto, cuerpo)
+                g.db.execute("delete from apadrinamientos where id=?", [request.form['id']])
+
             else:
                 flash("CUIDADO: Algo ha ido mal. Comprueba los logs o pregunta al administrador")
             g.db.commit()
@@ -51,7 +79,7 @@ def gestionusuarios():
                 g.db.execute("update usuarios set activo=0 where id=?", [request.form['id']])
                 
                 # Email a admins
-                destino = "MASTER"
+                destino = "ADMINISTRADORES"
                 asunto = "Usuario eliminado"
                 cuerpo = "El administrador {0} ha desactivado al usuario {1}. Sus datos y observaciones no han sido eliminados.".format(session['email'], u_email)
                 f.enviar_email(destino, asunto, cuerpo)

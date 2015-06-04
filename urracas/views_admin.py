@@ -172,8 +172,8 @@ def gestiondatos():
                 flash("Avistamiento eliminado.")
                 g.db.commit()
     
-    encAvistamientos = ['id','usuarioId','usuario','usuarioActivo','momento','lat','lng','conAnillas','derechaSuperior','izquierdaInferior','izquierdaSuperior','anillaExtra','derechaMedio','actividad','modoLectura','cantidad','apadrinadoPor','apadrinadoComo','validado']
-    avistamientos = g.db.execute('select a.id as id, a.usuarioId as usuarioId, a.email as usuario, a.activo as usuarioActivo, a.momento as momento, a.lat as lat, a.lng as lng, a.conAnillas as conAnillas, a.RT as derechaSuperior, a.LB as izquierdaInferior, a.LT as izquierdaSuperior, a.extraAnillas as anillaExtra, a.RM as derechaMedio, a.actividad as actividad, a.lectura as modoLectura, a.cuantas as cantidad, p.usuarioID as apadrinadoPor, p.nombre as apadrinadoComo, p.validado as apadrinamientoValidado from (select * from (select * from avistamientos) as a left join (select * from usuarios) as u on a.usuarioId = u.id) as a left join (select * from apadrinamientos) as p using (usuarioId);').fetchall()
+    encAvistamientos = ['usuario','usuarioActivo','id','usuarioId','momento','latitud','longitud','conAnillas','Derecha Superior','Izquierda Inferior','Izquierda Superior','Anilla Extra','Derecha Medio','actividad','lectura','IP','creado','cantidad']
+    avistamientos = g.db.execute('select usu.email as usuario, usu.activo as usuarioActivo, avist.* from (select * from avistamientos) as avist left join (select * from usuarios) as usu on avist.usuarioId = usu.id;').fetchall()
     
     return render_template('admin/gestiondatos.html', encAvistamientos=encAvistamientos, avistamientos=avistamientos)
 

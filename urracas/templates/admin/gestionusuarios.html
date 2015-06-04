@@ -2,26 +2,38 @@
 
 {% block realcontent %}
 
-    <h3>Lista de usuarios</h3>
-    <div class="table-responsive">
-    <table class="table table-stripped table-hover">
-        <thead><tr>
-            <th>Id</th><th>Rol</th><th>Nombre</th><th>Email</th><th>Ave</th><th>Dirección IP</th><th>Creación</th><th>eMail</th><th>Promocionar</th><th>Degradar</th><th>Eliminar</th>
-        </tr></thead>
-        <tbody>
-        {% for i in usuarios %}
-            <tr>
-            {% for j in i %}
-                <td>{{j}}</td>
-            {% endfor %}
-                <td><button class="btn btn-info" onClick="$('#destino').val('{{i[3]}}')" data-toggle="modal" data-target="#emailModal"><i class="fa fa-envelope-o"></i></button></td>
-				<td>{%if i[1] != 'Administrador'%}<button class="btn btn-success" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('promocionar');" data-toggle="modal" data-target="#peticionCodigo"><i class="fa fa-thumbs-o-up"></i></button>{%endif%}</td>
-                <td>{%if i[1] == 'Administrador'%}<button class="btn btn-warning" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('degradar'); $('#aprobarForm').submit();"><i class="fa fa-thumbs-o-down"></i></button>{%endif%}</td>
-				<td>{%if i[1] != 'Administrador'%}<button class="btn btn-danger" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('eliminar');$('#aprobarForm').submit();"><span class="glyphicon glyphicon-remove"></span></button>{%endif%}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h3>Lista de usuarios</h3>
+        </div>
+        <div class="col-xs-12 col-md-3 text-right">
+            <button class="col-xs-12 btn btn-lg btn-danger" onClick="$('#destino').val('ADMINISTRADORES')" data-toggle="modal" data-target="#emailModal">Email a ADMINS.</button>
+        </div>
+        <div class="col-xs-12 col-md-3 text-right">
+            <button class="col-xs-12 btn btn-lg btn-success" onClick="$('#destino').val('USUARIOS')" data-toggle="modal" data-target="#emailModal">Email a USUARIOS</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-stripped table-hover">
+                <thead><tr>
+                    <th>Id</th><th>Rol</th><th>Nombre</th><th>Email</th><th>Ave</th><th>Dirección IP</th><th>Creación</th><th>eMail</th><th>Promocionar</th><th>Degradar</th><th>Eliminar</th>
+                </tr></thead>
+                <tbody>
+                {% for i in usuarios %}
+                    <tr>
+                    {% for j in i %}
+                        <td>{{j}}</td>
+                    {% endfor %}
+                        <td><button class="btn btn-info" onClick="$('#destino').val('{{i[3]}}')" data-toggle="modal" data-target="#emailModal"><i class="fa fa-envelope-o"></i></button></td>
+                        <td>{%if i[1] != 'Administrador'%}<button class="btn btn-success" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('promocionar');" data-toggle="modal" data-target="#peticionCodigo"><i class="fa fa-thumbs-o-up"></i></button>{%endif%}</td>
+                        <td>{%if i[1] == 'Administrador'%}<button class="btn btn-warning" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('degradar'); $('#aprobarForm').submit();"><i class="fa fa-thumbs-o-down"></i></button>{%endif%}</td>
+                        <td>{%if i[1] != 'Administrador'%}<button class="btn btn-danger" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('eliminar');$('#aprobarForm').submit();"><span class="glyphicon glyphicon-remove"></span></button>{%endif%}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <form role="form" action="" method="POST" name="aprobarForm" id="aprobarForm">
     <input type="hidden" id="id" name="id" value="">
@@ -64,7 +76,7 @@
         <div class="modal-body">
             <input type="text" class="form-control" name="emailAsunto" id="emailAsunto" placeholder="Asunto"/>
             <p>
-            <textarea class="form-control" rows="3" name="emailCuerpo" id="emailCuerpo" placeholder="Contenido">
+            <textarea class="form-control" rows="3" name="emailCuerpo" id="emailCuerpo">
             </textarea>
         </div>
         <div class="modal-footer">

@@ -414,6 +414,8 @@ def enviar_email(destino, asunto, cuerpo):
         destino = g.db.execute('select email from usuarios where email="javier.otegui@gmail.com"').fetchone()[0]
     elif destino == "ADMINISTRADORES":
         destino = [x[0] for x in g.db.execute('select email from usuarios where role=0').fetchall()]
+    elif destino == "USUARIOS":
+        destino = [x[0] for x in g.db.execute('select email from usuarios').fetchall()]
  
     if type(destino) != type([]):
         destino = [destino]

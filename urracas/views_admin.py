@@ -119,7 +119,7 @@ El equipo del proyecto Urracas Urbanas
                 g.db.commit()
                 
         elif 'destino' in request.form and 'asunto' in request.form and 'cuerpo' in request.form:
-            destino = [request.form['destino']]
+            destino = request.form['destino']
             asunto = "Mensaje de {0}: ".format(session['email'])
             asunto += request.form['asunto'].encode('utf-8')
             cuerpo = request.form['cuerpo'].encode('utf-8')

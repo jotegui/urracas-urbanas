@@ -12,4 +12,5 @@ apikey.py
 .access
 
 # Dev files
+config.py
 *.pyc

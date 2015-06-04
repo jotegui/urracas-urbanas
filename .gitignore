@@ -9,6 +9,7 @@ urracas/flask.db
 
 # API keys
 apikey.py
+.access
 
 # Dev files
 *.pyc

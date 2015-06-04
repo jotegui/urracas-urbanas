@@ -1,0 +1,46 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+<div class="row">
+<form id="nidosform" name="nidosform" method="POST" role="form" action="nidos">
+	<div class="col-md-12 col-xs-12" id="map_title"><h1>¿Has visto algún{{otro}} nido o dormidero?</h1></div>
+	<button type="button" class="col-xs-3 btn btn-primary btn-lg" data-toggle="modal" data-target="#mapaNidos" onClick="initializeMiniMap(42.81211, -1.64922);">Sí</button>
+
+
+	<div class="modal fade" id="mapaNidos" tabindex="-1" role="dialog" aria-labelledby="mapaNidosLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			  <h4 class="modal-title" id="mapaNidosLabel">Dinos dónde has visto el nido o el dormidero</h4>
+			</div>
+			<div class="modal-body">
+			  <div id="minimap_canvas" style="width: 100%; height: 400px"></div>
+			  <input type="hidden" id="lat" name="lat" />
+			  <input type="hidden" id="lng" name="lng" />
+			</div>
+			<div class="modal-footer">
+				<div class="pull-left">
+					<label>¿Era un nido o un dormidero?</label>
+				<label class="radio-inline">
+				  <input type="radio" name="nidoDormidero" id="nidoDormideroNido" value="nidos" checked> Nido
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="nidoDormidero" id="nidoDormideroDormidero" value="dormideros"> Dormidero
+				</label>
+				</div>
+			  <button type="button" class="btn btn-default" onClick="quitarMiniMarker();">Borrar</button>
+			  <button type="submit" id="submitnido" class="btn btn-primary" disabled="disabled">Aceptar</button>
+			</div>
+		  </div>
+	  </div>
+	</div>
+</form>
+
+<div class="col-xs-1">&nbsp</div>
+
+<form id="emptynidosform" name="emptynidosform" method="GET" role="form" action="inicio">
+	<button type="submit" class="col-xs-3 btn btn-primary btn-lg">No</button>
+</form>
+</div>
+{% endblock %}

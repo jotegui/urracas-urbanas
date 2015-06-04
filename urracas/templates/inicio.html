@@ -1,0 +1,115 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">Hola, {{session['nombre']}}</h1>
+      </div>
+      <div class="modal-body">
+          <h2 class="text-center">¿Qué quieres hacer?</h2>
+
+
+          <form method="GET" name="instrucciones" action="instrucciones" class="form col-md-12 center-block">
+            <div class="form-group">&nbsp</div>
+            <div class="form-group"></div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" style="white-space: normal;"><i class="fa fa-info-circle"></i> Ver las instrucciones para informar sobre un avistamiento <i class="fa fa-info-circle"></i></button>
+            </div>
+          </form>
+
+          <!-- FORMULARIO -->
+          <form method="GET" name="formulario" action="formulario" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" style="white-space: normal;"><i class="fa fa-binoculars"></i> Informar sobre uno o más avistamientos <i class="fa fa-binoculars"></i></button>
+            </div>
+          </form>
+          
+          <!-- NIDOS -->
+          <form method="GET" name="nidos" action="nidosdormideros" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" style="white-space: normal;"><i class="fa fa-tree"></i> Informar sobre uno o más nidos y/o dormideros <i class="fa fa-tree"></i></button>
+            </div>
+          </form>
+
+          <!-- MIS OBSERVACIONES -->
+          <form method="GET" name="mis_observaciones" action="mis_observaciones" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" style="white-space: normal;"><i class="fa fa-user"></i> Ver mis avistamientos <i class="fa fa-user"></i></button>
+            </div>
+          </form>
+          
+          <!-- INFORME -->
+          <form method="GET" name="info" action="info" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block" style="white-space: normal;"><i class="fa fa-bar-chart"></i> Ver la información conocida sobre una urraca <i class="fa fa-bar-chart"></i></button>
+            </div>
+          </form>
+      
+      
+          {% if session['rol'] == 0 %}
+      
+          <!-- SECCION ADMINISTRADOR -->
+
+          <!-- FORMULARIO CAMPO -->
+          <form method="GET" name="formulariocampo" action="formulariocampo" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Acceder al formulario de campo</button>
+            </div>
+          </form>
+
+          <!-- GESTIONAR DATOS -->
+          <form method="GET" name="gestiondatos" action="gestiondatos" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Gestionar contenido (en construcción)</button>
+            </div>
+          </form>
+          
+          <!-- GESTIONAR DATOS URRACAS -->
+          <form method="GET" name="gestionanillamientos" action="gestionanillamientos" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Gestionar datos de anillamientos</button>
+            </div>
+          </form>
+          
+          <!-- GESTIONAR USUARIOS -->
+          <form method="GET" name="gestionusuarios" action="gestionusuarios" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Gestionar usuarios</button>
+            </div>
+          </form>
+          
+          <!-- APROBACION APADRINAMIENTOS -->
+          <form method="GET" name="aprobar" action="aprobar" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Aprobar nombres de apadrinamiento</button>
+            </div>
+          </form>
+          
+          <!-- FORMULARIO RELACIONES -->
+          <form method="GET" name="relaciones" action="relaciones" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;">Acceder al formulario de relaciones</button>
+            </div>
+          </form>
+          
+          <!-- RESETEAR LOS MAPAS -->
+          <form method="GET" name="resetcdb" action="resetcdb" class="form col-md-12 center-block">
+            <div class="form-group">
+              <button class="btn btn-danger btn-lg btn-block" style="white-space: normal;"><i class="fa fa-exclamation-triangle"></i> Resetear los mapas (PELIGRO!!) <i class="fa fa-exclamation-triangle"></i></button>
+            </div>
+          </form>
+      
+          {% endif %}
+      
+      </div>
+      
+      <div class="modal-footer">
+          <div class="col-md-12">
+		  </div>	
+      </div>
+  </div>
+</div>
+
+{% endblock %}

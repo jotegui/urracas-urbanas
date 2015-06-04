@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<!-- load modal on page load -->
+<script type="text/javascript">
+    $(window).load(function(){
+        $('#altaModal').modal({backdrop: 'static', keyboard: false});
+        $('#altaModal').modal('show');
+    });
+</script>
+
+<!--login modal-->
+<div class="modal" id="altaModal">
+<div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">Alta en el sistema</h1>
+      </div>
+      <div class="modal-body">
+      
+        <!-- Messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% if messages[0].startswith("CUIDADO") %}
+        <div id="messages" name="messages" class="alert alert-warning alert-dismissible" role="alert">
+            {% else %}
+        <div id="messages" name="messages" class="alert alert-success alert-dismissible" role="alert">
+            {% endif %}
+            <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+      
+      
+        <p>Es muy sencillo darse de alta en el sistema y empezar a informar sobre avistamientos. El registro sólo consta de tres pasos:</p>
+        <ol>
+            <li><strong>Introduce tu dirección de correo electrónico</strong> en el campo "Email". Sólo por asegurarnos de que está bien, te pedimos que introduzcas el correo electrónico dos veces</li>
+            <li><strong>Indícanos tu nombre</strong> en el apartado "Nombre" (no hace falta que pongas apellidos), y</li>
+            <li><strong>Pulsa sobre la imagen de un ave</strong> de las nueve que te mostramos. Sólo una. Y acuérdate bien de ella, será la que te pediremos cuando quieras entrar en el sistema (pero no te preocupes si te olvidas, nosotros te podemos recordar cuál es).</li>
+        </ol>
+        <p>Cuando hayas rellenado los campos y seleccionado una imagen, <strong>pulsa en "Darse de alta"</strong>. Volverás a la página anterior donde, como medida de seguridad, <strong>tendrás que introducir la dirección de correo electrónico y pulsar sobre el ave</strong> que has seleccionado para acceder al sistema.</p>
+        <a href="mailto:javier.otegui@gmail.com"><span class=" text-center glyphicon glyphicon-question-sign"></span> ¿Problemas? Pulsa aquí para enviarnos un email</a>
+          <form method="POST" name="registroForm" id="registroForm" class="form col-md-12 center-block" action="#">
+            <div class="form-group">&nbsp</div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input name="email" id="email" class="form-control input-lg" placeholder="Email (ej. pperez@gmail.com)" type="text">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input name="email2" id="email2" class="form-control input-lg" placeholder="Repite el email" type="text">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                <input name="nombre" id="nombre" class="form-control input-lg" placeholder="Nombre (ej. Pedro)" type="text">
+              </div>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+                <div class="container-fluid">
+                    <div class="row">
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="1"><img class="img-responsive" src="static/login_imgs/login_pato.jpg" alt="pato"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="2"><img class="img-responsive" src="static/login_imgs/login_urraca.jpg" alt="urraca"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="3"><img class="img-responsive" src="static/login_imgs/login_mirlo.jpg" alt="mirlo"/>
+                        </label>
+
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="4"><img class="img-responsive" src="static/login_imgs/login_gorrion.jpg" alt="gorrion"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="5"><img class="img-responsive" src="static/login_imgs/login_paloma.jpg" alt="paloma"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="6"><img class="img-responsive" src="static/login_imgs/login_petirrojo.jpg" alt="petirrojo"/>
+                        </label>
+
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="7"><img class="img-responsive" src="static/login_imgs/login_carbonero.jpg" alt="carbonero"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="8"><img class="img-responsive" src="static/login_imgs/login_cernicalo.jpg" alt="cernicalo"/>
+                        </label>
+                        <label class="btn btn-default">
+                            <input name="login" type="radio" value="9"><img class="img-responsive" src="static/login_imgs/login_vencejo.jpg" alt="vencejo"/>
+                        </label>
+                     </div>
+                </div>
+            </div>
+            <div class="form-group">&nbsp</div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-lg btn-block" style="white-space: normal;">Darse de alta en el sistema</button>
+              <button type="button" class="btn btn-info btn-lg btn-block" style="white-space: normal;" onClick="window.location.replace('{{url_for("registro")}}');">Volver</button>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+		  </div>	
+      </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

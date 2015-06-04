@@ -1,0 +1,61 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+{% if obs | length == 0 %}
+    <h3>Aún no has registrado ningún avistamiento.</h3>
+{% else %}
+
+<!-- Google Maps -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+
+<!-- Areas -->
+<script type="text/javascript" src="/urracas/static/js/areas.js"></script>
+
+<!-- Funciones propias del formulario de avistamiento -->
+<script type="text/javascript" src="/urracas/static/js/funciones_mapas.js"></script>
+<script type="text/javascript" src="/urracas/static/js/funciones_misobs.js"></script>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <th>Momento de la observación</th><th>Latitud</th><th>Longitud</th><th>Ver en el mapa</th><th>¿Con anillas?</th><th>Anilla Derecha Superior</th><th>Anilla Izquierda Inferior</th><th>Anilla Izquierda Superior</th><th>¿Qué hacía la urraca?</th><th>¿Cómo la avistaste?</th>
+        </thead>
+        <tbody>
+    {% for i in obs %}
+            <tr>
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td><button class="btn btn-info" data-toggle="modal" data-target="#mapaNidos" onClick="initializeObsMap({{i[1]}}, {{i[2]}});"><span class="glyphicon glyphicon-globe"></span></button></td>
+                <td>{%if i[3]==1%}Sí{%else%}No{%endif%}</td>
+                <td>{{i[4]}}</td>
+                <td>{{i[5]}}</td>
+                <td>{{i[6]}}</td>
+                <td>{{i[7]}}</td>
+                <td>{{i[8]}}</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<button class="btn btn-primary" onclick="window.location.replace('{{url_for("inicio")}}');">Volver</button>
+
+        <div class="modal fade" id="mapaNidos" tabindex="-1" role="dialog" aria-labelledby="mapaNidosLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title" id="mapaNidosLabel">Aquí es donde nos has dicho que viste a esta urraca</h4>
+                </div>
+                <div class="modal-body">
+                  <div id="map_canvas" style="width: 100%; height: 400px"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+          </div>
+        </div>
+
+{% endblock %}

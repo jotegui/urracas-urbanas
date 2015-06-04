@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse navbar-left">
+      <a class="navbar-brand" href="#"><strong>URRACAS URBANAS</strong><br>Facultad de Ciencias - Departamento de Biología Ambiental</a>
+    </div>
+    <div class="navbar-header navbar-right">
+      <a class="navbar-brand" href="http://www.unav.edu">
+        <a href="http://www.unav.edu" title="Universidad de Navarra">
+          <img alt="Universidad de Navarra" src="static/logo-unav.png">
+        </a>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    
+    {% block realcontent %}
+    
+    {% endblock %}
+
+</div>
+<div class="container-fluid">
+    <hr>
+
+    <div id="pie"> 
+	    <div id="copyright"> 
+		    <i class="fa fa-copyright"></i> <a href="http://www.unav.edu" title="Universidad de Navarra" target="_blank">Universidad de Navarra</a> | <i class="fa fa-envelope"></i> <a href="" title="Contacto" data-toggle="modal" data-target="#modalContacto">Contacto</a> | <i class="fa fa-code"></i> <a href="http://about.me/jotegui" target="_blank">Aplicación creada por Javier Otegui</a>
+	    </div> 
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalContacto" tabindex="-1" role="dialog" aria-labelledby="modalContactoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h3 class="modal-title" id="modalContactoLabel">Contactar con nosotros</h3>
+      </div>
+      <div class="modal-body">
+        <h4>Dudas o consultas sobre el proyecto</h4>
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-2">
+                    <img src="static/avilches.jpg" alt="Foto de Antonio" class="img-circle img-responsive" />
+                </div><div class="col-xs-4 text-center">
+                    Antonio Vilches
+                </div><div class="col-xs-6">
+                    <a href="mailto:antvilches@gmail.com"><i class="fa fa-envelope"></i> antvilches@gmail.com</a>
+                </div>
+            </div>
+        </div>
+
+        <h4>Preguntas o problemas con las web</h4>
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-2">
+                    <img src="static/jotegui.jpg" alt="Foto de Javier" class="img-circle img-responsive" />
+                </div><div class="col-xs-4 text-center">
+                    Javier Otegui
+                </div><div class="col-xs-6">
+                    <a href="mailto:javier.otegui@gmail.com"><i class="fa fa-envelope"></i> javier.otegui@gmail.com</a><br>
+                    <a href="http://about.me/jotegui" target="_blank"><i class="fa fa-globe"></i> http://about.me/jotegui</a><br>
+                    <a href="http://www.twitter.com/jotegui" target="_blank"><i class="fa fa-twitter"></i> @jotegui</a><br>
+                </div>
+            </div>
+        </div>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

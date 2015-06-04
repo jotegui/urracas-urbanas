@@ -1,0 +1,31 @@
+    <div class="col-md-4 col-xs-12">
+      <button type="button" class="col-md-12 col-xs-12 btn btn-info" data-toggle="modal" data-target="#mapaNidos" onClick="initializeMiniMap($('#lat').val(), $('#lng').val());">Haz click aquí si has visto algún nido o dormidero</button>
+    </div>
+    
+    
+    <div class="modal fade" id="mapaNidos" tabindex="-1" role="dialog" aria-labelledby="mapaNidosLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="mapaNidosLabel">Dinos dónde has visto el nido o el dormidero</h4>
+            </div>
+            <div class="modal-body">
+            <div id="minimap_canvas" style="width: 100%; height: 400px"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-left">
+                    <label>¿Era un nido o un dormidero?</label>
+                <label class="radio-inline">
+                  <input type="radio" name="nidoDormidero" id="nidoDormideroNido" value="nido"> Nido
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="nidoDormidero" id="nidoDormideroDormidero" value="dormidero"> Dormidero
+                </label>
+                </div>
+              <button type="button" class="btn btn-default" onClick="quitarMiniMarker();">Borrar</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+            </div>
+          </div>
+      </div>
+    </div>

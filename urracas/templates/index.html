@@ -1,0 +1,70 @@
+{% extends "withofficialnavbar.html" %}
+{% block realcontent %}
+
+    <div class="row">
+      <div class="col-xs-12 col-md-8">
+            <div class="well"><h1>Urracas urbanas de Pamplona</h1></div>
+
+			<div class="col-xs-12">
+				<form action="{{url_for("registro")}}">
+					<button class="btn btn-info btn-lg col-xs-12" >Acceso al sistema</button>
+				</form>
+			</div>
+			
+			<div class="col-xs-12">
+				<hr>
+			</div>
+			
+            <p class="text-justify">Bienvenido al formulario para la entrega de datos para el proyecto de estudio de las urracas urbanas de Pamplona.</p>
+            <p class="text-justify">Las <a href="http://eol.org/pages/1177362/overview" target="_blank">urracas</a>, comúnmente conocidas como picarazas, son aves cada vez más frecuentes en las zonas urbanas. Al igual que otras aves, esta
+            especie se instala cómodamente en parques y jardines, donde encuentra alimento y lugares para la cría.</p>
+            <p class="text-justify">Su aparente abundancia ha despertado el interés por conocer cuál es el estado de su poblacion en Pamplona. Con el fin de obtener datos sobre su densidad y sus movimientos por la ciudad, la <a href="http://www.unav.edu" target="_blank">Universidad de Navarra<sup><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></sup></a>, en colaboración con el <a href="http://www.unav.edu/departamento/ambiun/" target="_blank">Departamento de Biología Ambiental<sup><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></sup></a> de la <a href="http://www.unav.edu/web/facultad-de-ciencias/" target="_blank">Facultad de Ciencias<sup><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></sup></a>, ha promovido un estudio de tres años de duración que intentará dar respuesta a preguntas como: ¿cuántas parejas reproductoras hay? ¿cuál es la densidad de aves en los principales parques de la ciudad? ¿presenta valores de abundancia similares a los de otras zonas urbanas? ¿qué factores pueden estar influenciando en su población? ¿existe conectividad entre los distintos parques? ¿qué papel juega cada uno de los parques en la dinámica de la población de la especie? etc.</p>
+
+            <p class="text-justify">El trabajo de campo será realizado por <a href="http://www.ornitolan.com/" target="_blank">ORNITOLAN Servicios Ambientales S.C.<sup><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></sup></a>, pero ¡TODOS PODEMOS PARTICIPAR! Gran parte de este trabajo se basa en el número de avistamientos de urracas marcadas con anillas de colores, cuya combinación es única. Sólo tienes que indicarnos qué código has visto. Completando un breve formulario que ofrecemos a continuación, podrás realizar tu aportación a este estudio.</p>
+            
+            <p class="text-justify">¡Gracias por tu colaboración!</p>
+        </div>
+
+        <div class="col-md-4 hidden-xs hidden-sm">
+			<div id="carousel-urracas" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+				<li data-target="#carousel-urracas" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-urracas" data-slide-to="1"></li>
+				<li data-target="#carousel-urracas" data-slide-to="2"></li>
+			  </ol>
+
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner" role="listbox">
+				<div class="item active">
+				  <img src="static/carousel1.jpg" alt="Urraca cerca">
+				  <div class="carousel-caption">
+				  </div>
+				</div>
+				<div class="item ">
+				  <img src="static/carousel2.jpg" alt="Dormidero">
+				  <div class="carousel-caption">
+				  </div>
+				</div>
+				<div class="item ">
+				  <img src="static/carousel3.jpg" alt="Urraca">
+				  <div class="carousel-caption">
+				  </div>
+				</div>
+			  </div>
+
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-urracas" role="button" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-urracas" role="button" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			  </a>
+			</div>
+			<p class="text-center"><a href="mailto:javier.otegui@gmail.com">Mándanos tu mejor foto y podrá aparecer aquí</a></p>
+        </div>
+    </div>
+
+{% endblock %}

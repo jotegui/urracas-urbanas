@@ -1,0 +1,132 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+    <div class="row">
+        <div class="col-xs-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="active"><a href="{{url_for("inicio")}}">Volver</a></li>
+                <li role="presentation"><a href="{{url_for("info")}}">Información general</a></li>
+                {% for metal in metales %}
+                    {% if 'metal' in datos and metal==datos['metal'] %}
+                <li role="presentation" class="active"><a href="{{url_for("info")}}/{{metal}}" class="enlaceave" data-toggle="tooltip" data-placement="top" title="Anilla / Derecha Arriba / Izquierda Abajo / Izquierda arriba">{{aves[metal]}}</a></li>
+                    {% else %}
+                <li role="presentation"><a href="{{url_for("info")}}/{{metal}}" class="enlaceave" data-toggle="tooltip" data-placement="top" title="Anilla / Derecha Arriba / Izquierda Abajo / Izquierda arriba">{{aves[metal]}}</a></li>
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-xs-8 well">
+            {% if 'metal' not in datos %}
+            <h2>Datos generales sobre la aplicación</h2>
+            <h4>Movimientos generales de todas las urracas avistadas</h4>
+            <div id="torquemap"></div><span id="helpBlock" class="help-block">Si no ves puntos en el mapa y el ave ha sido vista al menos una vez, prueba a recargar la página. Ten en cuenta que si hay pocos puntos, la animación se verá a trompicones.</span>
+            <h4>Elige una urraca de la lista de la izquierda para conocer más detalles</h4>
+            <table class="table table-stripped">
+                <tbody>
+                    <tr><td>Usuarios dados de alta</td><td>{{datos['usuarios']}}</td></tr>
+                    <tr><td>Avistamientos totales</td><td>{{datos['avistamientos']}}</td></tr>
+					<tr><td>Avistamientos de urracas anilladas</td><td>{{datos['avistamientos_anillas']}}</td></tr>
+                    <tr><td>Tus avistamientos</td><td>{{datos['tus_avistamientos']}}</td></tr>
+                    <tr><td>Tu ranking entre todos los usuarios</td><td>{% if datos['posicion'] == "" %}No disponible{% else %}{{datos['posicion']}}{% endif %}</td></tr>
+                    <tr><td>Avistamientos de nidos</td><td>{{datos['nidos']}}</td></tr>
+                    <tr><td>Nidos vistos por ti</td><td>{{datos['tus_nidos']}}</td></tr>
+                    <tr><td>Avistamientos de dormideros</td><td>{{datos['dormideros']}}</td></tr>
+                    <tr><td>Dormideros vistos por ti</td><td>{{datos['tus_dormideros']}}</td></tr>
+                    <tr></tr>
+                    <tr><td>Urracas con anillas circulando por Pamplona</td><td>{{datos['marcadas']}}</td></tr>
+                    <tr><td>Urracas apadrinadas</td><td>{{datos['apadrinadas']}}</td></tr>
+                    <tr><td>Porcentaje de urracas apadrinadas</td><td>{{datos['porc_apadrinadas']}}%</td></tr>
+                </tbody>
+            </table>
+            
+            {% else %}
+            <h1>Información sobre el ave {{datos['metal']}}</h1>
+                {% if datos['nombre'] != "" %}
+                <h2><i>(nombre de pila: {{datos['nombre']}})</i></h2>
+                {% endif %}
+            <hr>
+            <h3>Últimas localizaciones conocidas</h3>
+            
+            <div id="torquemap"></div><span id="helpBlock" class="help-block">Si no ves puntos en el mapa y el ave ha sido vista al menos una vez, prueba a recargar la página.</span>
+            
+            <table class="table table-stripped">
+                <tbody>
+                    <tr><td>Ha sido vista</td><td>{{datos['avistamientos_num']}} {% if datos['avistamientos_num']==1 %}vez{% else %}veces{%endif%}</td></tr>
+                    <tr><td>Vista por primera vez el día</td><td>{{datos['captura_fecha']}}</td></tr>
+                    <tr><td>A la hora</td><td>{{datos['captura_hora']}}</td></tr>
+                    <tr><td>Edad</td><td>{{datos['captura_edad']}} cuando se capturó</td></tr>
+                    <tr><td>Sexo</td><td>{{datos['captura_sexo']}}</td></tr>
+                    <tr><td>Código de la anilla de metal</td><td>{{datos['metal']}}</td></tr>
+                    <tr><td>Color de la anilla Derecha Superior</td><td class="text-capitalize">{% if datos['captura_ds']=="" %}Sin anilla{%else%}{{datos['captura_ds']}}{%endif%}</td></tr>
+                    <tr><td>Color de la anilla Izquierda Inferior</td><td class="text-capitalize">{% if datos['captura_ii']=="" %}Sin anilla{%else%}{{datos['captura_ii']}}{%endif%}</td></tr>
+                    <tr><td>Color de la anilla Izquierda Superior</td><td class="text-capitalize">{% if datos['captura_is']=="" %}Sin anilla{%else%}{{datos['captura_is']}}{%endif%}</td></tr>
+                </tbody>
+            </table>
+
+            {% endif %}
+            
+            <!-- TORQUE MAP -->
+            <!-- torque requires underscore as a dependency -->
+            <script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+            <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+            <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+            <style>
+              body { margin:0; padding:0; }
+              #torquemap { width:100%; height:300px;}
+            </style>
+            <!--
+              torque is a library that works with Leaflet & Mapbox.js, and displays
+              temporal data from CartoDB.
+              See the full documentation at https://github.com/CartoDB/torque
+              -->
+            <script src='https://cartodb-libs.global.ssl.fastly.net/torque.full.js'></script>
+            <script>
+            L.mapbox.accessToken = 'pk.eyJ1Ijoiam90ZWd1aSIsImEiOiJnYndCZWxrIn0.uyctgYfmYldPiDc8i9lkvg';
+            var torquemap = L.mapbox.map('torquemap', 'examples.h186knp8')
+                .setView([42.81215, -1.64927], 12);
+
+            // Torque uses CartoCSS styles, similar to those in TileMill,
+            // but with a few extra keywords prefixed by -torque and the
+            // extra filter, frame-offset.
+            var CARTOCSS = [
+                  'Map {',
+                  '-torque-time-attribute: "momento";',
+                  '-torque-aggregation-function: "count(cartodb_id)";',
+                  '-torque-frame-count: 1024;',
+                  '-torque-animation-duration: 2;',
+                  '-torque-resolution: 1',
+                  '}',
+                  '#layer {',
+                  '  marker-width: 5;',
+                  '  marker-fill-opacity: 0.9;',
+                  '  marker-fill: #6600FF; ',
+                  '  comp-op: "lighten";',
+                  '  [frame-offset = 1] { marker-width: 7; marker-fill-opacity: 0.45;}',
+                  '  [frame-offset = 2] { marker-width: 9; marker-fill-opacity: 0.30;}',
+                  '}'
+              ].join('\n');
+
+            // This layer is an example of ship positions: replace the user
+            // and table with your own to use this example.
+              var torqueLayer = new L.TorqueLayer({
+                user       : 'jotegui',
+                {% if 'metal' not in datos %}
+                table      : 'avistamientos',
+                {% else %}
+                sql        : "select * from avistamientos where ds='{{datos['captura_ds']}}' and ii='{{datos['captura_ii']}}' and _is='{{datos['captura_is']}}'",
+                {% endif %}
+                cartocss: CARTOCSS
+              });
+
+            // This example autoplays: there are other options available:
+            // https://github.com/CartoDB/torque/blob/master/doc/API.md
+            torqueLayer.addTo(torquemap);
+            torqueLayer.play();
+            </script>
+
+        </div>
+    </div>
+
+{% endblock %}

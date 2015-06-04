@@ -1,0 +1,103 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<h3>Formulario de relaciones</h3>
+
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-justified" role="tablist">
+    <li role="presentation"><a href="#parentesco" aria-controls="parentesco" role="tab" data-toggle="tab">Relaciones de parentesco entre urracas</a></li>
+    <li role="presentation"><a href="#lugar" aria-controls="lugar" role="tab" data-toggle="tab">Relaciones de urracas con su entorno</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active fade" id="parentesco">
+        <div class="row">
+            <div class="col-xs-12">&nbsp</div>
+            <form method="POST" role="form" name="parentescoForm" id="parentescoForm" action="">
+            <div class="col-xs-12 col-md-3 text-center">
+                <div class="form-group">
+                    <label for="sujeto" class="col-xs-12 control-label text-center">Sujeto</label>
+                    <div class="col-xs-12">
+                        <select class="form-control" name="sujeto" id="sujeto">
+                            {% for i in metales %}
+                            <option value="{{i[0]}}">{{i[0]}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-md-3 text-center">
+                <div class="form-group">
+                    <label for="relacion" class="col-xs-12 control-label text-center">Relación</label>
+                    <div class="col-xs-12">
+                        <select class="form-control" name="relparent" id="relparent">
+                            {% for i in relaciones %}
+                            <option value="{{i[0]}}">es {{i[1]}} de</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xs-12 col-md-3 text-center">
+                <div class="form-group">
+                    <label for="objeto" class="col-xs-12 control-label text-center">Objeto</label>
+                    <div class="col-xs-12">
+                        <select class="form-control" name="objeto" id="objeto">
+                            {% for i in metales %}
+                            <option value="{{i[0]}}">{{i[0]}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            </form>
+            
+            <div class="col-xs-12 col-md-3 text-center">
+                <div class="form-group">
+                    <label for="enviar" class="col-xs-12 control-label text-center">&nbsp</label>
+                    <div class="col-xs-12">
+                        <button id="enviar" name="enviar" class="btn btn-success" onclick="compruebaRelacion();">Añadir</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div> <!-- ROW -->
+    </div> <!-- tabpanel -->
+    
+    
+    <div role="tabpanel" class="tab-pane fade" id="lugar">
+    
+    </div> <!-- tabpanel -->
+  
+  </div> <!-- tab-content -->
+
+
+<div class="col-xs-12">&nbsp</div>
+<div>
+    <button class="btn btn-primary" onclick="window.location.replace('{{url_for("inicio")}}')">Volver</button>
+</div>
+
+
+
+<!-- MODAL PROBLEMA -->
+<div id="problemaModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="problemaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="problemaModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+        <p id="descripcionProblema"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+# ENV files
+env/
+
+# LIB files
+lib/
+
+# Database
+urracas/flask.db
+
+# API keys
+apikey.py
+
+# Dev files
+*.pyc

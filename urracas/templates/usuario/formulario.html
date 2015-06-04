@@ -1,0 +1,292 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<!-- Google Maps -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+
+<!-- Areas -->
+<script type="text/javascript" src="/urracas/static/js/areas.js"></script>
+
+<!-- Funciones propias del formulario de avistamiento -->
+<script type="text/javascript" src="/urracas/static/js/funciones_mapas.js"></script>
+<script type="text/javascript" src="/urracas/static/js/funciones_formulario.js"></script>
+
+<div class="row">
+
+    <!-- EMPTY FORM -->
+    <form method="GET" role="form" name="emptydataform" id="emptydataform" action="{{url_for("inicio")}}">
+        <div class="col-md-9 col-xs-12" id="map_title"><h1>Señala sobre el mapa el lugar del avistamiento</h1></div>
+        <div class="col-md-3 col-xs-12" id="continueButton"><button class="col-xs-12 btn btn-primary btn-lg">No he visto más aves</button></div>
+        <div class="form-group col-md-12 col-xs-12"></div>
+    </form>
+    
+    <!-- FULL FORM -->
+    <form method="POST" role="form" name="dataform" id="dataform" action="formulario">
+        <div class="col-md-8 col-xs-11" id="map_canvas" style="height: 750px"></div>    <!-- MAP -->
+     
+        <noscript><p><b>Para usar este formulario, debes tener habilitado el JavaScript de tu navegador web.</b> 
+          Sin embargo, parece que JavaScript está deshabilitado, o no funciona correctamente en tu navegador.
+          Para poder usar Google Maps, activa el JavaScript desde las opciones de tu navegador, y prueba de nuevo.
+          Otra opción es que cambies de navegador. Sabemos que esta aplicación funciona correctamente con la
+          última versión de firefox (<a href="http://www.firefox.com" target="_blank">http://www.firefox.com</a>). ¿Por qué no pruebas con ella?</p>
+        </noscript>
+
+        <div class="form-group col-md-4 col-xs-12">
+		</div>
+        
+        <div class="form-group">
+			<label tabindex="0" class="col-md-1 col-xs-4 control-label" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Momento de la observacion" data-content="Utiliza el selector (icono del calendario) para indicar la fecha y hora en las que viste a la urraca. La hora puede ser aproximada, redondeado al cuarto de hora. Si es ahora, pulsa el botón 'Ahora'. Ten en cuenta que el campo no admite un momento posterior a la hora actual ni anterior al inicio del estudio."><a>¿Cuándo?</a></label>
+			<div class="col-md-3 col-xs-8">
+				<button type="button" class="btn btn-info col-xs-12" id="AHORA" name="AHORA" onClick="activarAhora();">Ahora</button>
+			</div>
+            
+			<label for="momentopicker" class="col-md-1 col-xs-4 control-label"></label>
+            <div class="form-group col-md-3 col-xs-8">
+				<div id="momentopicker" class="input-group datetimepicker">
+					<input type="text" class="form-control" data-date-format="YYYY/MM/DD HH:mm" id="momento" name="momento" placeholder="... o pulsa el calendario">
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-default" id="AHORA" name="AHORA"><i class="fa fa-calendar"></i></button>
+					</div>
+				</div>
+			</div>
+			
+        </div>
+
+        <div class="form-group">
+          <label tabindex="0" class="col-md-1 col-xs-4 control-label" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Lugar donde estaba la urraca" data-content="En el mapa, pulsa sobre el lugar donde estaba la urraca."><a>¿Dónde?</a></label>
+          <div class="col-md-3 col-xs-8">
+            <input type="text" class="form-control" id="lat" name="lat" placeholder="Haz click en el mapa para rellenar." readonly />
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="lng" class="col-md-1 col-xs-4 control-label"></label>
+          <div class="col-md-3 col-xs-8">
+            <input type="text" class="form-control" id="lng" name="lng" placeholder="Haz click en el mapa para rellenar." readonly />
+          </div>
+        </div>
+        
+        <div class="form-group col-md-4 col-xs-12"><hr/></div>
+        
+        <div class="checkbox col-md-4 col-xs-12">
+			<div tabindex="0" class="col-xs-9 control-label" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Presencia de anillas" data-content="Si has visto anillas en las patas de la urraca, cambia el selector hasta que se vea 'Sí'. Si no has visto ninguna anilla, cámbialo hasta que se vea 'No'.">
+				<a><strong>¿Tenía anillas en alguna pata?</strong></a>
+			</div>
+			<div class="col-xs-3">
+				<input class="formcheckbox" type="checkbox" id="conAnillas" name="conAnillas" onChange="activarAnillas();" data-label-text="<i class='fa fa-arrows-h fa-lg'></i>"/>
+			</div>
+        </div>
+        
+		<div id="cuantasUrracasDiv" class="form-group col-md-4 col-xs-12">
+			<div class="col-xs-9">
+				<label for="cantidad" class="control-label" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Tamaño del grupo de urracas" data-content="Indica si has visto una sola urraca o un grupo de varias. Procura ser exacto con la cantidad de urracas, es importante para el estudio. Si has visto más de 10 en un mismo sitio, probablemente hayas visto un dormidero, y te agradeceríamos que nos lo indicases en el formulario de 'nidos y dormideros'.">
+					<a>¿Cuántas urracas había en la zona?</a>
+				</label>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control" name="cuantas" id="cuantas">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+			</div>
+		</div>
+		
+        <div id="Rdiv" class="col-md-4 col-xs-12">
+		
+            <div class="form-group col-xs-6">Derecha Abajo</div>
+            <div class="form-group col-xs-6">
+              <input type="text" class="form-control" placeholder="Metálica" disabled="disabled"/>
+            </div>
+			
+			<div class="form-group col-xs-6"><strong>Derecha Arriba</strong></div>
+			<div class="form-group col-xs-6">
+              <select class="form-control" name="RT" id="RT">
+                <option class="" value="">Sin anilla</option>
+				<option class="" value="desconocido">No reconocible</option>
+				<option class="" value="naranja">Naranja</option>
+                <option class="" value="amarillo">Amarillo</option>
+                <option class="" value="blanco">Blanco</option>
+              </select>
+            </div>
+            
+        </div>
+        
+        <div id="Ldiv" class="col-md-4 col-xs-12">
+            
+			<div class="form-group col-xs-6"><strong>Izquierda Abajo</strong></div>
+            <div class="form-group col-xs-6">
+				<select class="form-control" name="LB" id="LB" onChange="enableLT();">
+				  <option class="" value="">Sin anilla</option>
+				  <option class="" value="desconocido">No reconocible</option>
+				  <option class="" value="naranja">Naranja</option>
+				  <option class="" value="amarillo">Amarillo</option>
+				  <option class="" value="blanco">Blanco</option>
+				  <option class="" value="azul">Azul</option>
+				  <option class="" value="verde">Verde</option>
+				  <option class="" value="morado">Morado</option>
+				  <option class="" value="rojo">Rojo</option>
+				</select>
+            </div>
+			
+			<div class="form-group col-xs-6"><strong>Izquierda Arriba</strong></div>
+            <div class="form-group col-xs-6">
+				<select class="form-control" name="LT" id="LT" disabled="disabled">
+				  <option class="" value="">Sin anilla</option>
+				  <option class="" value="desconocido">No reconocible</option>
+				  <option class="" value="naranja">Naranja</option>
+				  <option class="" value="amarillo">Amarillo</option>
+				  <option class="" value="blanco">Blanco</option>
+				  <option class="" value="azul">Azul</option>
+				  <option class="" value="verde">Verde</option>
+				  <option class="" value="morado">Morado</option>
+				  <option class="" value="rojo">Rojo</option>
+				</select>
+            </div>
+            
+        </div>
+        
+        <div id="3div" class="checkbox col-md-4 col-xs-12">
+			<div class="col-xs-9" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Anilla extra en la pata derecha" data-content="Muy pocas de las urracas que tienen anillas muestran tres anillas en total en la pata derecha: una metálica y dos de color. Si la que has visto tenía estas anillas, mueve el selector hasta que se vea 'Sí'. De lo contrario, muévelo hasta que se vea 'No'.">
+				<a><strong>¿Con <u>TRES</u> anillas en la derecha?</strong></a>
+			</div>
+			<div class="col-xs-3">
+				<input class="formcheckbox" type="checkbox" id="extraanilla" name="extraanilla" onChange="mostrarExtraAnilla();" data-label-text="<i class='fa fa-arrows-h fa-lg'></i>"/>
+            </div>
+
+        </div>
+        
+        <div id="RMBlock" class="form-group hide">
+		  <div class="col-md-4 col-xs-12">
+			  <label for="lat" class="col-md-6 col-xs-12 control-label">Pata Derecha Medio</label>
+			  <div class="col-md-6 col-xs-12">
+				<select class="form-control" name="RM" id="RM">
+				  <option class="" value="">Sin anilla</option>
+				  <option class="" value="desconocido">No reconocible</option>
+				  <option class="" value="naranja">Naranja</option>
+				  <option class="" value="amarillo">Amarillo</option>
+				  <option class="" value="blanco">Blanco</option>
+				  <option class="" value="azul">Azul</option>
+				  <option class="" value="verde">Verde</option>
+				  <option class="" value="morado">Morado</option>
+				  <option class="" value="rojo">Rojo</option>
+				</select>
+			  </div>
+		  </div>
+        </div>
+        
+		<div class="form-group col-md-4 col-xs-12"><hr/></div>
+        
+        <div class="checkbox col-md-4 col-xs-12">
+			<div class="col-xs-9" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Estado de la urraca" data-content="Si la urraca que has visto estaba muerta, cambia el selector hasta que se vea 'Sí'. Si estaba viva, cámbialo hasta que se vea 'No'.">
+				<a><strong>¿Ha sido encontrada muerta?</strong></a>
+			</div>
+			<div class="col-xs-3">
+				<input class="formcheckbox" type="checkbox" id="muerta" name="muerta" onChange="desactivarActividad();" data-label-text="<i class='fa fa-arrows-h fa-lg'></i>"/>
+            </div>
+        </div>
+        
+		<div class="form-group col-md-4 col-xs-12"></div>
+
+        <div class="form-group col-md-4 col-xs-12" id="actividaddiv">
+          <label class="col-xs-12" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="top" title="Actividad de la urraca" data-content="Indica qué estaba haciendo la urraca de entre la lista de actividades. Recuerda que si la urraca estaba volando, el dato no es útil para el estudio (por eso no aparece en la lista de opciones)."><a>¿Qué hacía la urraca?</a></label>
+          <div class="col-xs-12">
+            <select class="form-control" id="actividad" name="actividad">
+              <option value="reposar">Reposar</option>
+              <option value="comer">Comer</option>
+              <option value="pelear">Pelear</option>
+              <option value="alimentar">Alimentar a otro ave</option>
+              <option value="recolectar">Recolectar material para el nido</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4 col-xs-12"></div>
+        
+        <div class="form-group col-md-4 col-xs-12">
+          <label class="col-xs-12" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="top" title="Cómo has visto la urraca" data-content="Dinos si sólo has visto la urraca, a simple vista o con prismáticos, o si además le has sacado una fotografía."><a>Modo de avistamiento</a></label>
+          <div class="col-xs-12">
+            <select class="form-control" id="lectura" name="lectura">
+              <option value="vista">Simple vista</option>
+              <option value="prismaticos">Prismáticos</option>
+              <option value="fotografia">Fotografía</option>
+            </select>
+          </div>
+        </div>
+    </form>
+    
+</div> <!-- ROW -->
+
+<div class="row">
+    <script type="text/javascript">
+        var codigos = {{codigos | safe}};
+    </script>
+    <div class="form-group col-xs-12">&nbsp</div>
+    <button type="button" class="col-xs-12 btn btn-primary btn-lg" onClick="compruebaCodigo(codigos);">Enviar</button>
+
+    <div class="form-group col-md-4 col-xs-12"></div>
+</div> <!-- ROW -->
+
+
+<!-- MODAL CONFIRMACIÓN CÓDIGO -->
+<div class="modal fade" id="confirmacionCodigo" tabindex="-1" role="dialog" aria-labelledby="confirmacionCodigoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="confirmacionCodigoLabel">¿Estás seguro del código de colores?</h4>
+        </div>
+        <div class="modal-body">
+        <p>El ave con esta combinación de colores no consta en el registro de aves marcadas hasta la fecha. Esto puede deberse a que el código de colores no sea correcto o porque la base de datos no haya sido actualizada (por ejemplo, este ave ha sido marcada hace unas horas y aún no ha sido incorporada a la base de datos).</p>
+        <p>Si estás completamente seguro de que el código es correcto, pulsa en "El código es correcto". Si no, pulsa en "Volver y corregir" para corregirlo.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Volver y corregir</button>
+          <button type="button" class="btn btn-primary" onclick="$('#dataform').submit();">El código es correcto</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- MODAL ANILLA EXTRA -->
+<div class="modal fade" id="extraAnillaModal" tabindex="-1" role="dialog" aria-labelledby="extraAnillaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="extraAnillaModalLabel">¿Estás seguro?</h4>
+        </div>
+        <div class="modal-body">
+        <p><strong>En unos pocos casos</strong> las aves tienen tres anillas en la pata derecha (una metálica y <strong>dos de color</strong>), pero no es lo normal. Lo más común es encontrarse con urracas con dos anillas en la pata derecha (una metálica y <strong>una de color</strong>).</p>
+        <p>No descartamos que hayas podido ver una urraca con tres anillas en la pata derecha, pero al ser un caso tan excepcional, queremos asegurarnos de que has entendido lo inusual de la situación. Al activar esta opción, hemos habilitado un campo extra para el color de la anilla que falta (pata derecha, en el medio).</p>
+        <p>Si la urraca que has visto sólo tenía dos anillas en la pata derecha, vuelve a pulsar en la casilla y el formulario volverá a ser como antes.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal" style="white-space: normal">¡Entendido!</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- MODAL PROBLEMA -->
+<div id="problemaModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="problemaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="problemaModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+        <p id="descripcionProblema"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

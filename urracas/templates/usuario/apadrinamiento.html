@@ -1,0 +1,29 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+      <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="mapaNidosLabel">Atención</h4>
+            </div>
+            <div class="modal-body">
+                <form name="apadrinamientoForm" id="apadrinamientoForm" method="POST" action="formulario" role="form">
+                <p>Es la priera vez que alguien ha registrado este ave. Tienes la oportunidad de ponerle un nombre. Procura que sea sencillo y adecuado (pista: es una urraca {{sexo}})</p>
+                <div class="form-group">
+                    <label class="col-xs-4" for="apadrinado">Nombre para el ave:</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" name="apadrinado" id="apadrinado" />
+                    </div>
+                    <p>&nbsp</p>
+                </div>
+                <input type="hidden" id="apadrinar" name="apadrinar">
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" onClick="$('#apadrinar').val('no'); $('#apadrinamientoForm').submit();">No me interesa</button>
+              <button type="button" class="btn btn-primary" onClick="$('#apadrinar').val('si'); $('#apadrinamientoForm').submit();">"Apadrinar" al ave</button>
+            </div>
+          </div>
+      </div>
+{% endblock %}
+    

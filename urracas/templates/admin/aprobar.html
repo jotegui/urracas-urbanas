@@ -1,0 +1,34 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+    {% if nombres | length == 0 %}
+    <h3>No hay nombres por aprobar</h3>
+    {% else %}
+    <h3>Lista de nombres por apadrinar</h3>
+    <form role="form" action="" method="POST" name="aprobarForm" id="aprobarForm">
+    <div class="table-responsive">
+    <table class="table table-stripped table-hover">
+        <thead><tr>
+            <th>Id</th><th>Usuario</th><th>Nombre Propuesto</th><th>Dirección IP</th><th>Creación</th><th>Aprobar</th><th>Denegar</th>
+        </tr></thead>
+        <tbody>
+        {% for i in nombres %}
+            <tr>
+            {% for j in i %}
+                <td>{{j}}</td>
+            {% endfor %}
+                <td><button class="btn btn-success" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('aprobar');"><span class="glyphicon glyphicon-ok"></span></button></td>
+                <td><button class="btn btn-danger" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('denegar');"><span class="glyphicon glyphicon-remove"></span></button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <input type="hidden" id="id" name="id" value="">
+    <input type="hidden" id="accion" name="accion" value="">
+    </form>
+    {% endif %}
+    <button class="btn btn-lg btn-default" onclick="window.location.replace('{{url_for("inicio")}}');">Volver</button>
+    
+{% endblock %}

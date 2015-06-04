@@ -1,0 +1,113 @@
+<html>
+<head lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" profile="http://dublincore.org/documents/dcq-html/">		
+	<title>Universidad de Navarra - Urracas de Pamplona</title> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+
+	<meta name="Keywords" content="" /> 
+	<meta name="Description" content="" /> 
+
+	<script type="text/javascript" src="http://www.unav.es/evento/medio-ambiente/exponent.js.php"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<style type="text/css">@import url(http://www.unav.es/evento/medio-ambiente/themes/unavcongresotheme/css/overlay.css);</style> 
+
+	<link rel="stylesheet" href="http://www.unav.es/evento/medio-ambiente/themes/unavcongresotheme/css/style.css" type="text/css" /> 
+	<link rel="stylesheet" href="http://www.unav.es/evento/medio-ambiente/themes/unavcongresotheme/css/interna_sin_anexo.css" type="text/css" /> 
+
+<!-- JAVASCRIPT -->
+
+<!-- Bootstrap -->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+
+<!-- Funciones Bootstrap -->
+<script src="//ajax.googleapis.com/ajax/libs/mootools/1.3.0/mootools-yui-compressed.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/lang/en-gb.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>  
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- Google Maps -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+
+<!-- Propias -->
+<script type="text/javascript" src="static/funciones.js"></script> 
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" type="text/css" />
+
+<style type="text/css">
+html, body { height: 100%; }
+P {
+    text-align: justify;
+    fint-size: 13;
+}
+#shell{
+    text-align: left;
+}
+ol, ul {
+    text-align: left;
+}
+
+#documento, #cabecera {
+    width:auto;
+}
+
+.amarillo {background: yellow;}
+.blanco {background: white;}
+.naranja {background: orange;}
+.azul {background: #01014a;}
+.rojo {background: #c70a0a;}
+.morado {background: #940f6a;}
+.verde {background: #0e5c0e;}
+
+</style>
+
+	<link rel="shortcut icon" href="http://www.unav.es/favicon.ico" /> 
+</head> 
+
+<body>
+<div id="documento">
+    <div id="cabecera"> 
+        <div id="foto-esquina">
+            <div style="position:relative; z-index:1; width:100%;"> 
+                <img id="u4beae548dfcc2_slideshowImg" src=".static/Picapica.png" border="0" height="76" width="150"/> 
+                <script type="text/javascript" src="http://www.unav.es/evento/medio-ambiente/modules/slideshowmodule/slideshow.js.php?u=u4beae548dfcc2"></script> 
+            </div>
+        </div> 
+        <div id="nombre-catedra"> 
+            <table> 
+                <tr> 
+                    <td id="catedra-td"> 
+                        <h1 id="catedra">URRACAS URBANAS</h1> 
+                        <span id="fac"><a href="http://www.unav.es/facultad/ciencias" title="Facultad de Ciencias">FACULTAD DE CIENCIAS</a></span>
+                    </td> 
+                </tr> 
+            </table> 
+        </div> 
+        <div id="logotipo">
+            <a href="http://www.unav.es" title="Universidad de Navarra"><img src="http://www.unav.es/evento/medio-ambiente/themes/unavcongresotheme/imagenes/marca-page.png" alt="Universidad de Navarra" /></a>
+        </div>
+    </div>
+
+
+
+{% block content %}
+
+{% endblock %}
+
+
+</div>
+
+<div id="pie"> 
+	<div id="copyright"> 
+		&#169; <a href="http://www.unav.es" title="Universidad de Navarra">Universidad de Navarra</a> | <a href="http://www.unav.es/servicio/acercadelaweb/" title="Acerca de la web">Acerca de la web</a> | <a href="mailto:ebaquero@unav.es" title="Contacto">Contacto</a>	
+	</div> 
+</div>	
+</body>
+</html>
+
+

@@ -1,0 +1,102 @@
+﻿{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<!-- Google Maps -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+
+<!-- Areas -->
+<script type="text/javascript" src="/urracas/static/js/areas.js"></script>
+
+<!-- Funciones propias del formulario de avistamiento -->
+<script type="text/javascript" src="/urracas/static/js/funciones_mapas.js"></script>
+<script type="text/javascript" src="/urracas/static/js/funciones_nidos.js"></script>
+
+<div class="row">
+
+    <!-- EMPTY FORM -->
+    <form method="GET" role="form" name="emptydataform" id="emptydataform" action="{{url_for("inicio")}}">
+        <div class="col-md-9 col-xs-12" id="map_title"><h1>Señala sobre el mapa el lugar donde has visto el nido o dormidero</h1></div>
+        <div class="col-md-3 col-xs-12" id="continueButton"><button class="col-xs-12 btn btn-primary btn-lg">No he visto más</button></div>
+        <div class="form-group col-md-12 col-xs-12"></div>
+    </form>
+	
+	<form id="nidosform" name="nidosform" method="POST" role="form" action="nidosdormideros">
+		<div class="row">
+			<div class="col-xs-11 col-md-8" id="map_canvas" style="height: 400px"></div>
+            <div class="col-xs-11 col-md-4">
+                <div class="col-xs-12 text-center"><h2>Era un...</h2></div><div class="col-xs-4">&nbsp</div>
+                <div class="btn-group-vertical col-xs-12" role="group" data-toggle="buttons">
+                    <label class="btn btn-warning btn-md active col-xs-6">
+                        <input type="radio" name="nidoDormidero" id="nidoDormideroNido" value="nidos" checked style="white-space: normal;"><h3>Nido</h3>
+                    </label>
+                    <label class="btn btn-warning btn-md col-xs-6">
+                        <input type="radio" name="nidoDormidero" id="nidoDormideroDormidero" value="dormideros" style="white-space: normal;"><h3>Dormidero</h3>
+                    </label>
+                    <br>
+                </div>
+                <div class="btn-group-vertical col-xs-12" role="group" data-toggle="buttons">
+                    <label class="btn btn-default btn-md col-xs-6" data-toggle="modal" data-target="#masInfoModal">
+                        <h3>¿Cómo distinguirlos?</h3>
+                    </label>
+                </div>
+                <div class="col-xs-12">&nbsp</div>
+                <div class="col-xs-12">
+                    <button type="submit" id="submitnido" class="btn btn-primary btn-md col-xs-12" style="white-space: normal;" disabled="disabled"><h3>Enviar</h3></button>
+                </div>
+                <input type="hidden" id="lat" name="lat" />
+                <input type="hidden" id="lng" name="lng" />
+            </div>
+		</div>
+
+        </form>
+</div>
+
+
+
+<!-- MODAL MÁS INFO -->
+<div class="modal fade" id="masInfoModal" tabindex="-1" role="dialog" aria-labelledby="masInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="masInfoModalLabel">¿Cómo saber si es un nido o dormidero?</h4>
+        </div>
+        <div class="modal-body">
+            <p>Un nido es una estructura, situada en la copa de un árbol y hecha principalmente con trozos de madera, que ha construido una urraca para la puesta de sus huevos (<i>ver aviso importante sobre los nidos más abajo</i>). Por otro lado, un dormidero es un agrupamiento de aves que se reúnen para pasar la noche, especialmente durante el inverno. El tamaño de estos grupos puede variar de unos pocos individuos a más de 100 ejemplares. Para estar seguros de que lo que se ha visto es un dormidero, recomendamos que sólo se tengan en cuenta los grupos observados durante los 30 minutos antes de la puesta de sol. </p>
+            <p>Quizá, en este caso más que en ningún otro, una imagen valga más que mil palabras:</p>
+            <p>
+            <div class="col-xs-6"><p class="lead">NIDO</p></div>
+            <div class="col-xs-6"><p class="lead">DORMIDERO</p></div>
+            <img class="col-xs-6" src="/urracas/static/nido.jpg" alt="Foto de un nido" />
+            <img class="col-xs-6" src="/urracas/static/dormidero.jpg" alt="Foto de un dormidero" />
+            </p><p>&nbsp</p>
+            <p>De todas formas, el caso de los nidos es más complicado de lo que parece. Algunas estructuras en los árboles pueden parecer nidos pero no serlo, o tratarse de nidos antiguos. Para el objetivo del estudio, te pedimos que sólo nos informes sobre nidos activos.</p>
+            <p><strong>¿Cómo saber si el nido está activo?</strong> Un nido activo tiene que tener <strong>aspecto compacto y forma esférica</strong>. Si alguno de estos dos requisitos no se cumple, lo más probable es que se trate de un nido abandonado.</p>
+            <p>Aquí mostramos algunas imágenes de nidos válidos e inválidos:</p>
+            <p>&nbsp</p>
+            <p>Nido inválido: La forma no es esférica, es muy probable que el nido sea de algún año anterior.</p>
+            <img class="col-xs-12" src="/urracas/static/img/nidos/20150212-12.jpg" alt="Foto de un nido no valido" />
+            <p>&nbsp</p>
+            <p>Nido inválido: No tiene una estructura compacta. Probablemente haya sido un intento abandonado.</p>
+            <img class="col-xs-12" src="/urracas/static/img/nidos/20150212-10.jpg" alt="Foto de un nido no valido" />
+            <p>&nbsp</p>
+            <p>Nido válido: La forma es esférica y la estructura es compacta.</p>
+            <img class="col-xs-12" src="/urracas/static/img/nidos/20150212-18.jpg" alt="Foto de un nido valido" />
+            <p>&nbsp</p>
+            <p>Nido inválido: En realidad, no es un nido, es un avispero de avispa asiática. Como estas avispas hacen sus avisperos en lo alto de las copas de los árboles, tienen forma esférica y se ven compactas, es fácil que se confundan con un nido en uso.</p>
+            <img class="col-xs-12" src="/urracas/static/img/nidos/20150212-22.jpg" alt="Foto de un nido no valido" />
+            <p>&nbsp</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal" style="white-space: normal">¡Entendido!</button>
+        </div>
+      </div>
+  </div>
+</div>		
+
+
+
+		
+
+
+{% endblock %}

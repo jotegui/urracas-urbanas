@@ -1,0 +1,77 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+    <h3>Lista de usuarios</h3>
+    <div class="table-responsive">
+    <table class="table table-stripped table-hover">
+        <thead><tr>
+            <th>Id</th><th>Rol</th><th>Nombre</th><th>Email</th><th>Ave</th><th>Dirección IP</th><th>Creación</th><th>eMail</th><th>Promocionar</th><th>Degradar</th><th>Eliminar</th>
+        </tr></thead>
+        <tbody>
+        {% for i in usuarios %}
+            <tr>
+            {% for j in i %}
+                <td>{{j}}</td>
+            {% endfor %}
+                <td><button class="btn btn-info" onClick="$('#destino').val('{{i[3]}}')" data-toggle="modal" data-target="#emailModal"><i class="fa fa-envelope-o"></i></button></td>
+				<td>{%if i[1] != 'Administrador'%}<button class="btn btn-success" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('promocionar');" data-toggle="modal" data-target="#peticionCodigo"><i class="fa fa-thumbs-o-up"></i></button>{%endif%}</td>
+                <td>{%if i[1] == 'Administrador'%}<button class="btn btn-warning" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('degradar'); $('#aprobarForm').submit();"><i class="fa fa-thumbs-o-down"></i></button>{%endif%}</td>
+				<td>{%if i[1] != 'Administrador'%}<button class="btn btn-danger" onClick="$('#id').val('{{i[0]}}'); $('#accion').val('eliminar');$('#aprobarForm').submit();"><span class="glyphicon glyphicon-remove"></span></button>{%endif%}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <form role="form" action="" method="POST" name="aprobarForm" id="aprobarForm">
+    <input type="hidden" id="id" name="id" value="">
+    <input type="hidden" id="accion" name="accion" value="">
+	<input type="hidden" id="contra" name="contra" value="">
+    </form>
+    
+    <form role="form" action="" method="POST" name="emailForm" id="emailForm">
+    <input type="hidden" id="destino" name="destino" value="">
+    <input type="hidden" id="asunto" name="asunto" value="">
+	<input type="hidden" id="cuerpo" name="cuerpo" value="">
+    </form>
+
+    <button class="btn btn-lg btn-default" onclick="window.location.replace('{{url_for("inicio")}}');">Volver</button>
+    
+<div class="modal fade" id="peticionCodigo" tabindex="-1" role="dialog" aria-labelledby="peticionCodigoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="peticionCodigoLabel">Introduce una contraseña para este usuario</h4>
+        </div>
+        <div class="modal-body">
+			<input type="text" class="form-control" name="contraForm" id="contraForm" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="$('#contra').val($('#contraForm').val()); $('#aprobarForm').submit();">Promocionar a administrador</button>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="emailModalLabel">Envía un correo electrónico</h4>
+        </div>
+        <div class="modal-body">
+            <input type="text" class="form-control" name="emailAsunto" id="emailAsunto" placeholder="Asunto"/>
+            <p>
+            <textarea class="form-control" rows="3" name="emailCuerpo" id="emailCuerpo" placeholder="Contenido">
+            </textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="$('#asunto').val($('#emailAsunto').val()); $('#cuerpo').val($('#emailCuerpo').val()); $('#emailForm').submit();">Enviar</button>
+        </div>
+      </div>
+  </div>
+</div>
+	
+{% endblock %}

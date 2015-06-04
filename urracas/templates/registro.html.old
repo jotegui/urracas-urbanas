@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--login modal-->
+<!-- <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">-->
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="text-center">Entrada al sistema</h1>
+      </div>
+      <div class="modal-body">
+          <form class="form col-md-12 center-block">
+            <div class="form-group">
+              <input class="form-control input-lg" placeholder="Email (pperez@unav.es)" type="text">
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_pato.jpg" alt="Pato" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_urraca.jpg" alt="Urraca" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_mirlo.jpg" alt="Mirlo" class="img-rounded img-responsive"></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_gorrion.jpg" alt="Gorrión" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_paloma.jpg" alt="Paloma" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_petirrojo.jpg" alt="Petirrojo" class="img-rounded img-responsive"></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_carbonero.jpg" alt="Carbonero" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_cernicalo.jpg" alt="Cernícalo" class="img-rounded img-responsive"></button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-default login-button" data-toggle="button"><img src="static/login_imgs/login_vencejo.jpg" alt="Vencejo" class="img-rounded img-responsive"></button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-lg btn-block">Entrar</button>
+              <button class="btn btn-default btn-lg btn-block">Si nunca antes has entrado, haz click aquí</button>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12">
+		  </div>	
+      </div>
+  </div>
+  </div>
+<!-- </div>-->
+
+{% endblock %}

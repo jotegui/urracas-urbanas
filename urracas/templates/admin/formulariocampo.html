@@ -1,0 +1,530 @@
+{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<!-- Google Maps -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+
+<!-- Areas -->
+<script type="text/javascript" src="/urracas/static/js/areas.js"></script>
+
+<!-- Funciones propias del formulario de avistamiento -->
+<script type="text/javascript" src="/urracas/static/js/funciones_mapas.js"></script>
+<!-- <script type="text/javascript" src="/static/js/funciones_formulario.js"></script> -->
+
+    <script type="text/javascript" src="/urracas/static/js/funciones_campo.js"></script>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>FORMULARIO DE ENTRADA DE DATOS</h3>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <button class="btn btn-lg btn-primary" onclick="window.location.replace('{{url_for("inicio")}}')">Volver</button>
+        </div>
+        <div class="form-group col-xs-11">&nbsp</div>
+        
+        <form method="POST" role="form" name="dataform" id="dataform" action="">
+        
+        <div class="col-xs-11">
+            <div class="col-xs-12" id="map_title"><strong>LUGAR DE LA CAPTURA</strong></div>
+            <div class="col-xs-12" id="map_canvas" style="height: 500px"></div>
+        </div>
+        <noscript><p><b>JavaScript must be enabled in order for you to use Google Maps.</b> 
+          However, it seems JavaScript is either disabled or not supported by your browser. 
+          To view Google Maps, enable JavaScript by changing your browser options, and then 
+          try again.</p>
+        </noscript>
+        
+        <div class="form-group col-xs-11">&nbsp</div>
+        
+        <div class="form-group col-xs-11">
+            <label for="quien" class="col-md-2 col-xs-10 control-label">USUARIO</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control" name="USUARIO" id="USUARIO" value="{{session['nombre']}}" />
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="lat" class="col-md-2 col-xs-10 control-label">COORD. N</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control" id="lat" name="lat" placeholder="Haz click en el mapa para rellenar." />
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="lng" class="col-md-2 col-xs-10 control-label">COORD. W</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control" id="lng" name="lng" placeholder="Haz click en el mapa para rellenar." />
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+          <label for="FECHA" class="col-md-2 col-xs-11 control-label">FECHA</label>
+            <div class="col-md-2 col-xs-4">
+                <button type="button" class="col-xs-12 btn btn-default" id="HOY" name="HOY" onClick="activarHoy();">HOY</button>
+            </div>
+            <div class="col-md-8 col-xs-7">
+                <input type="text" class="form-control datepicker" id="FECHA" name="FECHA" placeholder="Otro (pulsa para abrir calendario)...">
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="LUGAR" class="col-md-2 col-xs-10">LUGAR</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control" name="LUGAR" id="LUGAR"/>
+            </div>
+        </div>
+        
+        
+        <!-- Actualizar a tipo hora -->
+        <div class="form-group col-xs-11">
+            <label for="HORAINI" class="col-md-2 col-xs-10">HORA INICIO</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control timepicker" name="HORAINI" id="HORAINI" placeholder="Pulsa para seleccionar"/>
+            </div>
+        </div>
+        <!-- Actualizar a tipo hora -->
+        
+        
+        <div class="form-group col-xs-11">
+            <label for="METAL" class="col-md-2 col-xs-10 data-toggle="tooltip" data-placement="top" title="Derecha Inferior" id="DIt"">METAL (DI)</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control" name="METAL" id="METAL" />
+            </div>
+        </div>
+        
+        <!--
+        <div class="form-group col-md-11">
+            <label class="col-md-2 hidden-xs hidden-sm">IDCOLOR</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="IDCOLOR" id="IDCOLOR" placeholder="Número entero">
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-md btn-success col-xs-12" name="COMPRUEBAIDCOLOR" id="COMPRUEBAIDCOLOR" onclick="compruebaIDColor();">Comprobar</button>
+            </div>
+        </div>
+        -->
+        
+        <div class="form-group col-md-11 col-xs-12">
+            <label class="col-md-2 hidden-xs hidden-sm">ANILLAS</label>
+            <label for="IDCOLOR" class="col-xs-2 text-center">IDCOLOR</label>
+            <label for="DS" class="col-xs-2 text-center" data-toggle="tooltip" data-placement="top" title="Derecha Superior" id="DSt">DS</label>
+            <label for="II" class="col-xs-2 text-center" data-toggle="tooltip" data-placement="top" title="Izquierda Inferior" id="IIt">II</label>
+            <label for="IS" class="col-xs-2 text-center" data-toggle="tooltip" data-placement="top" title="Izquierda Superior" id="ISt">IS</label>
+            <label for="DM" class="col-xs-2 text-center text-danger" data-toggle="tooltip" data-placement="top" title="Derecha Medio" id="DMt">DM</label>
+            <label for="" class="hidden-lg hidden-md">&nbsp</label>
+            
+            <div class="col-xs-2 hidden-xs hidden-sm"></div>
+            <div class="col-md-2 col-xs-2">
+                <input type="text" class="form-control" name="IDCOLOR" id="IDCOLOR" placeholder="Número entero"/>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name="DS" id="DS">
+                  <option value="">Ninguna</option>
+                  <option value="naranja">Naranja</option>
+                  <option value="amarillo">Amarillo</option>
+                  <option value="blanco">Blanco</option>
+                  <option value="azul">Azul</option>
+                  <option value="verde">Verde</option>
+                  <option value="morado">Morado</option>
+                  <option value="rojo">Rojo</option>
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name="II" id="II">
+                  <option value="">Ninguna</option>
+                  <option value="naranja">Naranja</option>
+                  <option value="amarillo">Amarillo</option>
+                  <option value="blanco">Blanco</option>
+                  <option value="azul">Azul</option>
+                  <option value="verde">Verde</option>
+                  <option value="morado">Morado</option>
+                  <option value="rojo">Rojo</option>
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name="IS" id="IS">
+                  <option value="">Ninguna</option>
+                  <option value="naranja">Naranja</option>
+                  <option value="amarillo">Amarillo</option>
+                  <option value="blanco">Blanco</option>
+                  <option value="azul">Azul</option>
+                  <option value="verde">Verde</option>
+                  <option value="morado">Morado</option>
+                  <option value="rojo">Rojo</option>
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name="DM" id="DM">
+                  <option value="">Ninguna</option>
+                  <option value="naranja">Naranja</option>
+                  <option value="amarillo">Amarillo</option>
+                  <option value="blanco">Blanco</option>
+                  <option value="azul">Azul</option>
+                  <option value="verde">Verde</option>
+                  <option value="morado">Morado</option>
+                  <option value="rojo">Rojo</option>
+                </select>
+            </div>
+        </div>
+        
+        
+        <!-- Actualizar a tipo hora -->
+        <div class="form-group col-xs-11">
+          <label for="hora" class="col-md-2 col-xs-11 control-label">HORACAPT</label>
+          <div class="col-md-10 col-xs-11">
+            <input type="text" class="form-control timepicker" id="hora" name="hora" placeholder="Pulsa para seleccionar">
+          </div>
+          </div>
+        <!-- Actualizar a tipo hora -->
+        
+        
+        <div class="form-group col-xs-11">
+            <label for="EDAD" class="col-md-2 col-xs-10">EDAD</label>
+            <div class="col-md-10 col-xs-11">
+                <select class="form-control" id="EDAD" name="EDAD">
+                {% for i in range(1, 7) %}
+                    <option value={{i}}>{{i}}</option>
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="SEXO" class="col-md-2 col-xs-10">SEXO</label>
+            <div class="col-md-10 col-xs-11">
+                <select class="form-control" name="SEXO" id="SEXO">
+                    <option value="U">DESCONOCIDO (U)</option>
+                    <option value="M">MACHO (M)</option>
+                    <option value="F">HEMBRA (F)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="GRASA" class="col-md-2 col-xs-10">GRASA</label>
+            <div class="col-md-10 col-xs-11">
+                <select class="form-control" name="GRASA" id="GRASA">
+                    {% for i in range(0, 17) %}
+                        <option value="{{i/2}}">{{i/2}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="MUSCULO" class="col-md-2 col-xs-10">MUSCULO</label>
+            <div class="col-md-10 col-xs-11">
+                <select class="form-control" name="MUSCULO" id="MUSCULO">
+                    {% for i in range(0, 7) %}
+                        <option value="{{i/2}}">{{i/2}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PESO" class="col-md-2 col-xs-10">PESO</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PESOSI" name="PESOM" value="true" onClick="enableID('PESO');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PESONO" name="PESOM" value="false" onClick="disableID('PESO');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PESO" id="PESO" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PLACA" class="col-md-2 col-xs-10">PLACA</label>
+            <div class="col-md-10 col-xs-11">
+                <select class="form-control" name="PLACA" id="PLACA">
+                    {% for i in range(0, 9) %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="TARSO" class="col-md-2 col-xs-10">TARSO</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="TARSOSI" name="TARSOM" value="true" onClick="enableID('TARSO');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="TARSONO" name="TARSOM" value="false" onClick="disableID('TARSO');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="TARSO" id="TARSO" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="CP" class="col-md-2 col-xs-10">C+P</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="CPSI" name="CPM" value="true" onClick="enableID('CP');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="CPNO" name="CPM" value="false" onClick="disableID('CP');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="CP" id="CP" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PCULMEN" class="col-md-2 col-xs-10">P. CULMEN</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PCULMENSI" name="PCULMENM" value="true" onClick="enableID('PCULMEN');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PCULMENNO" name="PCULMENM" value="false" onClick="disableID('PCULMEN');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PCULMEN" id="PCULMEN" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PALTO" class="col-md-2 col-xs-10">P. ALTO</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PALTOSI" name="PALTOM" value="true" onClick="enableID('PALTO');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PALTONO" name="PALTOM" value="false" onClick="disableID('PALTO');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PALTO" id="PALTO" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PANCHO" class="col-md-2 col-xs-10">P. ANCHO</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PANCHOSI" name="PANCHOM" value="true" onClick="enableID('PANCHO');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PANCHONO" name="PANCHOM" value="false" onClick="disableID('PANCHO');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PANCHO" id="PANCHO" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="ALA" class="col-md-2 col-xs-10">ALA</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="ALASI" name="ALAM" value="true" onClick="enableID('ALA');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="ALANO" name="ALAM" value="false" onClick="disableID('ALA');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="ALA" id="ALA" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        {% for i in range(1, 11) %}
+        <div class="form-group col-xs-11">
+            <label for="PP{{i}}" class="col-md-2 col-xs-10">PP {{i}}</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PP{{i}}SI" name="PP{{i}}M" value="true" onClick="enableID('PP{{i}}');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PP{{i}}NO" name="PP{{i}}M" value="false" onClick="disableID('PP{{i}}');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PP{{i}}" id="PP{{i}}" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="form-group col-xs-11">
+            <label for="NEGROPP1" class="col-md-2 col-xs-10">NEGRO PP 1</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="NEGROPP1SI" name="NEGROPP1M" value="true" onClick="enableID('NEGROPP1');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="NEGROPP1NO" name="NEGROPP1M" value="false" onClick="disableID('NEGROPP1');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="NEGROPP1" id="NEGROPP1" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="NEGROPP2" class="col-md-2 col-xs-10">NEGRO PP 2</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="NEGROPP2SI" name="NEGROPP2M" value="true" onClick="enableID('NEGROPP2');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="NEGROPP2NO" name="NEGROPP2M" value="false" onClick="disableID('NEGROPP2');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="NEGROPP2" id="NEGROPP2" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="COLA" class="col-md-2 col-xs-10">COLA</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="COLASI" name="COLAM" value="true" onClick="enableID('COLA');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="COLANO" name="COLAM" value="false" onClick="disableID('COLA');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-11">
+                <input type="text" class="form-control" name="COLA" id="COLA" placeholder="Número, punto (.) decimal" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="FOTOCARA" class="col-md-2 col-xs-11">FOTO CARA</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="FOTOCARASI" name="FOTOCARA" value="true" onClick="enableID('FOTOCARAID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="FOTOCARANO" name="FOTOCARA" value="false" onClick="disableID('FOTOCARAID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="FOTOCARAID" id="FOTOCARAID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="FOTOTARSO" class="col-md-2 col-xs-11">FOTO TARSO</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="FOTOTARSOSI" name="FOTOTARSO" value="true" onClick="enableID('FOTOTARSOID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="FOTOTARSONO" name="FOTOTARSO" value="false" onClick="disableID('FOTOTARSOID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="FOTOTARSOID" id="FOTOTARSOID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="PLUMAS" class="col-md-2 col-xs-11">PLUMAS</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="PLUMASSI" name="PLUMAS" value="true" onClick="enableID('PLUMASID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="PLUMASNO" name="PLUMAS" value="false" onClick="disableID('PLUMASID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="PLUMASID" id="PLUMASID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="SANGRE" class="col-md-2 col-xs-11">SANGRE</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="SANGRESI" name="SANGRE" value="true" onClick="enableID('SANGREID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="SANGRENO" name="SANGRE" value="false" onClick="disableID('SANGREID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="SANGREID" id="SANGREID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="DIETA" class="col-md-2 col-xs-11">DIETA</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="DIETASI" name="DIETA" value="true" onClick="enableID('DIETAID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="DIETANO" name="DIETA" value="false" onClick="disableID('DIETAID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="DIETAID" id="DIETAID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="MUDAACT" class="col-md-2 col-xs-11">MUDA ACT.</label>
+            <div class="col-md-2 col-xs-3">
+                <label class="radio-inline">
+                    <input type="radio" id="MUDAACTSI" name="MUDAACT" value="true" onClick="enableID('MUDAACTID');" /> SÍ
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="MUDAACTNO" name="MUDAACT" value="false" onClick="disableID('MUDAACTID');" /> NO
+                </label>
+            </div>
+            <div class="col-md-8 col-xs-8">
+                <input type="text" class="form-control" name="MUDAACTID" id="MUDAACTID" disabled="disabled"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="HORAFIN" class="col-md-2 col-xs-10">HORA FIN</label>
+            <div class="col-md-10 col-xs-11">
+                <input type="text" class="form-control timepicker" name="HORAFIN" id="HORAFIN" placeholder="Pulsa para seleccionar"/>
+            </div>
+        </div>
+        
+        <div class="form-group col-xs-11">
+            <label for="COMENTARIOS" class="col-md-2 col-xs-10">COMENTARIOS</label>
+            <div class="col-md-10 col-xs-11">
+                <textarea class="form-control" rows="3" id="COMENTARIOS" name="COMENTARIOS"></textarea>
+            </div>
+        </div>
+        </form>                
+        
+        <button class="col-xs-12 btn btn-primary btn-lg" onclick="compruebaAnillamiento();">Enviar</button>
+
+    </div>
+
+
+<!-- MODAL PROBLEMA -->
+<div id="problemaModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="problemaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="problemaModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+        <p id="descripcionProblema"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

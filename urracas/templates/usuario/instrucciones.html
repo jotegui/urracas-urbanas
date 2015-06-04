@@ -1,0 +1,81 @@
+{% extends "withnavbar.html" %}
+{% block realcontent %}
+
+
+    <div class="row">
+    
+        <div class="col-xs-12 col-md-8">
+            <h2>¿Cómo se informa sobre un avistamiento?</h2>
+
+            <p class="text-justify">Podemos informar tanto sobre el avistamiento de aves <strong>con anillas de colores</strong>, como de aves <strong>sin ellas</strong>. Si se trata de aves marcadas (con anillas), lo más importante de todo es estar muy seguro de la <strong>COMBINACIÓN</strong> y el <strong>ORDEN</strong> de los colores. En el caso de las aves <strong>sin marca</strong>, <strong>sólo</strong> se informará sobre su avistamiento cuando éste se dé dentro de las tres <strong>áreas coloreadas</strong> que se muestran en el <a href="#" data-toggle="modal" data-target="#zonasModal">mapa</a>.</p>
+
+            <p class="text-justify">Cada ave marcada llevará:</p>
+
+            <ul>
+            <li>una anilla metálica (con un código alfanumérico y un remite de la Oficina de Anillamiento de Aranzadi, como por ejemplo: <tt>M31313 ARANZADI SANSEBASTIAN</tt>).</li>
+            <li>una, dos o tres anillas de colores.</li>
+            </ul>
+
+            <p class="text-justify">Los colores disponibles son sólo los que se muestran en la paleta del menú desplegable en el formulario de avistamiento. Sólo es necesario elegir entre una de las siete opciones de colores. Si alguno de los colores que has visto no se corresponde con los colores disponibles, es posible que se deba a un efecto visual (poca luz, luz muy directa, malas condiciones visuales, etc). <strong>Si no estás seguro del color, lo mejor es que pongas la opción "Desconocido"</strong>. Esto nos permite distinguir si la urraca ha sido anillada o no, aunque no nos indiques su color. <strong>Dejar como "sin anilla" o elegir un color que puede no ser el correspondiente es menos útil para el estudio que poner color "Desconocido".</strong></p>
+
+            <p class="text-justify">Ya que el orden de los colores es <strong>MUY IMPORTANTE</strong>, seguiremos un protocolo para ir añadiendo cada uno de los colores vistos sobre el ave, indicando primero si se trata de la pata derecha o la izquierda. Aunque en el formulario se puede empezar por donde se quiera, es muy recomendable hacer la lectura de las anillas <strong>DE ABAJO A ARRIBA</strong> (como se hace en el resto de trabajos sobre lectura a distancia de anillas de colores). Así, diremos primero cuál es el color de la anilla más cercana al suelo y después el color de la anilla más cercana al cuerpo del ave.</p>
+
+            <p class="text-justify">En la siguiente serie de fotos se muestran tres de los posibles casos a modo de ejemplo:</p>
+
+            <ol>
+            <li>pata derecha, metal-naranja; pata izquierda nada-nada</li>
+            <li>pata derecha, metal-naranja; pata izquierda blanco-nada</li>
+            <li>pata derecha, metal-naranja; pata izquierda blanco-amarillo</li>
+            </ol>
+
+            <p class="text-justify">También podrás informar sobre la localización de un <strong>nido</strong> o de un <strong>dormidero</strong> de urracas. Estos <strong>dormideros</strong> son agrupamientos de aves que se reúnen para pasar la noche, especialmente durante el inverno. El tamaño de estos grupos puede variar de unos pocos individuos a más de 100 ejemplares. Para estar seguros de que lo que se ha visto es un dormidero, recomendamos que sólo se tengan en cuenta los grupos observados durante los 30 minutos antes de la puesta de sol.</p>
+
+            <p class="text-justify">Si alguna vez encuentras un ave anillada muerta, puedes ponerte en contacto con la Oficina de Anillamiento de Aranzadi (<a target="_blank" href="http://www.aranzadi-zientziak.org/ornitologia-oficina-de-anillamiento">http://www.aranzadi-zientziak.org/ornitologia-oficina-de-anillamiento<sup><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></sup></a>). Una vez facilites el código que aparece en la anilla de metal, te responderán con toda la información conocida sobre ese ave.</p>
+        </div>
+    
+        <div class="col-md-4 col-xs-12">
+            <img class="img-responsive" src="static/anillas_simple.jpg"/>
+            <img class="img-responsive" src="static/anillas_medio.jpg"/>
+            <img class="img-responsive" src="static/anillas.jpg"/>
+        </div>
+        
+        <div class="col-xs-12">&nbsp</div>
+        
+        <div class="col-xs-12">
+            <form action="{{url_for("inicio")}}">
+                <button class="btn btn-info btn-lg col-xs-12">Volver</button>
+            </form>
+        </div>
+        
+    </div>
+
+
+
+
+<div class="modal fade" id="zonasModal" tabindex="-1" role="dialog" aria-labelledby="zonasModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="zonasModalLabel">Zonas</h4>
+      </div>
+      <div class="modal-body">
+            <ul>
+                <li>Parque de la Taconera: área de color blanco</li>
+                <li>Parque de la Ciudadela: área de color amarillo</li>
+                <li>Campus de la Universidad de Navarra: área de color naranja</li>
+            </ul>
+            <p>No te preocupes si aquí no ves bien los bordes de las zonas. En el formulario también aparecen, y se puede hacer zoom.</p>
+            <img class="center-block img-responsive" alt="Mapa de las zonas de avistamiento" src="static/mapaZonas.png"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

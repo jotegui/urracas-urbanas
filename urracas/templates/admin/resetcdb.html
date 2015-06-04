@@ -1,0 +1,36 @@
+﻿{% extends 'withnavbar.html' %}
+
+{% block realcontent %}
+
+<div>
+    <h3>Restauración de mapas</h3>
+    <p>Los datos de la aplicación se almacenan en dos sistemas distintos. El primero y principal es una base de datos local, en la que se almacena toda la información detallada (avistamientos, anillamientos, apadrinamientos, etc.). Pero para poder crear los mapas que se ven en la página de información, la aplicación usa una base de datos externa en la nube, a la que manda una versión reducida de los datos. Al ser dos sistemas distintos, puede que se dé el caso de que haya una asincronía entre ambos sistemas, cuando en la base local se ha eliminado algún registro que en la externa no.</p>
+    <p>Esta página sirve para corregir este problema. Al pulsar en "Sí", la base de datos externa se reseteará: se eliminarán todos los registros existentes y se introducirán todos los registros que haya en la base de datos local. La mayoría de las veces es una operación segura, pero como siempre que se trata con borrado de datos, hay que tener cuidado y asegurarse de lo que estamos haciendo.</p>
+
+
+    <p><strong>Parece que hay problemas con el Proxy en la universidad</strong></p>
+    
+    <p>Esto obliga a hacer las cosas de una forma distinta. En vez de poder poner un botón que ejecute la tarea, habrá que hacerlo a mano. Por suerte, limpiar la base de datos sólo son 2 pasos, y se pueden hacer desde el navegador.<p>
+    
+    <h4>Primer paso, borrar la base de datos externa</h4>
+    <p>Para ello, <a target="_blank" href="{{sql_borrar}}">haz click en este enlace</a>. El resultado debería ser algo de este estilo:</p>
+    <pre>{
+    "rows": [ ],
+    "time": [un valor de tiempo de ejecución, generalmente pequeño (menor a un segundo)],
+    "fields": { },
+    "total_rows": [un valor numérico]
+}</pre>
+    
+    <h4>Segundo paso, repoblar la base de datos externa</h4>
+    <p>Para ello, <a target="_blank" href="{{sql_insertar}}">haz click en este enlace</a>. El resultado debería ser algo parecido a lo anterior.</p>
+    <p>Si todo ha ido bien, la base de datos remota ha sido sincronizada con la base local, y los mapas de la página de información deberían ser ahora correctos.
+   
+</div>
+
+<div class="col-xs-12 col-md-6">
+    <form action="{{url_for('inicio')}}" method="GET">
+        <button class="col-xs-12 btn btn-lg btn-info">Volver</button>
+    </form>
+</div>
+
+{% endblock %}

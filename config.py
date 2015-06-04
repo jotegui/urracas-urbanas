@@ -5,7 +5,6 @@ DATABASE = 'C:\\AppServ\\www\\urracas\\flask.db'
 SECRET_KEY = 'dev key'
 USERNAME = 'admin'
 PASSWORD = 'default'
-DEBUG=True
 
 # EMAIL
 MAIL_SERVER = 'smtp.googlemail.com'

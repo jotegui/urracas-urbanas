@@ -6,9 +6,8 @@ from flask import Flask, session
 from flask.ext.mail import Mail
 
 # Main app
-app = Flask(__name__)
+app = Flask(__name__.split('.')[0])
 app.config.from_object("config")
-print app.config['DATABASE']
 
 from logging import FileHandler
 log_path = 'C:\\AppServ\\www\\urracas\\log.txt'

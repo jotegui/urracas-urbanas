@@ -1,0 +1,4 @@
+Nota sobre cómo usar encode y decode en la aplicación
+
+1. Todo texto que sea insertado por el usuario tiene que recibir un .encode('utf-8'). Ejemplos: asunto y cuerpo del email, o nombre del usuario al dar de alta
+2. Todo texto que sea generado en uno de los archivos py tiene que recibir un .decode('utf-8'). Ejemplos: cualquier mensaje enviado con flash()

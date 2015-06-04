@@ -66,12 +66,12 @@ def gestionusuarios():
                 g.db.commit()
                 
         elif 'destino' in request.form and 'asunto' in request.form and 'cuerpo' in request.form:
-            remite = session['email']
             destino = [request.form['destino']]
-            asunto = request.form['asunto'].encode('utf-8')
+            asunto = "Mensaje de {0}: ".format(session['email'])
+            asunto += request.form['asunto'].encode('utf-8')
             cuerpo = request.form['cuerpo'].encode('utf-8')
-            flash("Mensaje enviado")        
-            f.enviar_email(remite=remite, destino=destino, asunto=asunto, cuerpo=cuerpo)
+            f.enviar_email(destino=destino, asunto=asunto, cuerpo=cuerpo)
+            flash("Mensaje enviado")    
             
     usuarios = g.db.execute("select id, case role when 0 then 'Administrador' when 1 then 'Usuario' end as role, name, email, case login when 1 then 'Pato' when 2 then 'Urraca' when 3 then 'Mirlo' when 4 then 'Gorrion' when 5 then 'Paloma' when 6 then 'Petirrojo' when 7 then 'Carbonero' when 8 then 'Cernicalo' when 9 then 'Vencejo' end as login, IP, creado from usuarios where activo=1;").fetchall()
     

@@ -43,9 +43,34 @@ def gestionusuarios():
     if request.method == 'POST':
                 
         if 'id' in request.form and 'accion' in request.form:
-                        
+            
+            u_email = g.db.execute("select email from usuarios where id=?", [request.form['id']]).fetchone()[0]
+            u_nombre = g.db.execute("select name from usuarios where id=?", [request.form['id']]).fetchone()[0].encode('utf-8')
+            
             if request.form['accion'] == 'eliminar':
                 g.db.execute("update usuarios set activo=0 where id=?", [request.form['id']])
+                
+                # Email a admins
+                destino = "MASTER"
+                asunto = "Usuario eliminado"
+                cuerpo = "El administrador {0} ha desactivado al usuario {1}. Sus datos y observaciones no han sido eliminados.".format(session['email'], u_email)
+                f.enviar_email(destino, asunto, cuerpo)
+                
+                # Email al usuario
+                destino = u_email
+                asunto = "Baja del proyecto Urracas Urbanas"
+                cuerpo = """Hola, {0}.
+
+Has sido dado de baja del proyecto Urracas Urbanas por los administradores. Ya no podrás acceder a la aplicación. Si crees que ha habido un error, envíanos un email y nos pondremos en contacto contigo.
+
+Queremos aprovechar para agradecerte el esfuerzo por informarnos sobre las urracas que has ido viendo por Pamplona y esperamos volver a verte pronto.
+
+Un saludo,
+El equipo del proyecto Urracas Urbanas
+""".format(u_nombre)
+                
+                f.enviar_email(destino, asunto, cuerpo)
+                
                 flash("Usuario desactivado. Sus datos y observaciones NO han sido eliminados")
                 g.db.commit()
             

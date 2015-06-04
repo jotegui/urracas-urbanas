@@ -105,6 +105,8 @@ def nueva_alta():
     
     post_insert_count = g.db.execute('select count(*) from usuarios where activo=1;').fetchone()[0]
     if post_insert_count-pre_insert_count == 1:
+        g.db.commit()
+        
         flash("Gracias, el nuevo usuario ha sido registrado en la base de datos. Para acceder al sistema, introduce tu correo electrónico, pulsa sobre la imagen del ave que seleccionaste y luego pulsa en \"Entrar\".".decode('utf-8'))
         
         # Email a admins
@@ -115,7 +117,7 @@ def nueva_alta():
         
         # Email a usuario
         destino = email
-        asunto = "Alta en en el proyecto Urracas Urbanas".decode('utf-8')
+        asunto = "Alta en en el proyecto Urracas Urbanas"
         cuerpo = """Enhorabuena, {0}, te acabas de dar de alta en la aplicación de Urracas Urbanas de Pamplona.
 
 A partir de ahora puedes acceder al sistema y comenzar a informarnos sobre las urracas que veas por Pamplona. Para ello, sólo tienes que ir a la dirección http://www.unav.es/urracas y acceder con tu dirección de correo electrónico (ésta) y la imagen del ave que has seleccionado al darte de alta. Si en algún momento te olvidas del ave que seleccionaste, no te preocupes, envíanos un email y te la recordaremos. Igualmente, no dudes en enviarnos un email para cualquier duda o sugerencia que quieras comunicarnos.
@@ -125,9 +127,8 @@ A partir de ahora puedes acceder al sistema y comenzar a informarnos sobre las u
 Un saludo,
 El equipo del proyecto Urracas Urbanas
 """.format(nombre.encode('utf-8'))
-        enviar_email(destino, asunto, cuerpo)
         
-        g.db.commit()
+        enviar_email(destino, asunto, cuerpo)
         
         return True
     else:

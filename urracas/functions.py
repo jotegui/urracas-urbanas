@@ -14,7 +14,10 @@ from . import app, mail
 cartodb_url = "http://jotegui.cartodb.com/api/v2/sql"
 
 def cartodb_api(q):
-    r = requests.get(cartodb_url, params={'api_key':apikey, 'q':q})
+    try:
+        r = requests.get(cartodb_url, params={'api_key':apikey, 'q':q}, proxies = {"http":"http://proxy.unav.es:8080"})
+    except:
+        return None
     return r
 
 def comprobar_registro(admin=False):
@@ -152,7 +155,6 @@ def registrar_avistamiento():
     
     conAnillas = 1 if 'conAnillas' in request.form else 0
     cuantas = int(request.form['cuantas']) if 'cuantas' in request.form and request.form['cuantas'] != "" else 1
-    print cuantas
     RT = request.form['RT'] if 'RT' in request.form else ''
     LB = request.form['LB'] if 'LB' in request.form else ''
     LT = request.form['LT'] if 'LT' in request.form else ''
@@ -161,6 +163,8 @@ def registrar_avistamiento():
     actividad = 'muerta' if 'muerta' in request.form else request.form['actividad']
     lectura = request.form['lectura']
     ip = request.remote_addr
+    
+    
     
     # Email a administradores si el ave esta muerta
     if actividad == 'muerta':
@@ -173,20 +177,21 @@ def registrar_avistamiento():
             cuerpo += "\n\nEl ave no presentaba anillas de colores."
         enviar_email(destino, asunto, cuerpo)
     
+    
     # LOCAL INSERT
     pre_insert_count = g.db.execute('select count(*) from avistamientos;').fetchone()[0]
     g.db.execute('INSERT INTO avistamientos (usuarioId, momento, lat, lng, conAnillas, cuantas, RT, LB, LT, extraAnillas, RM, actividad, lectura, IP) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [usuarioId, momento, lat, lng, conAnillas, cuantas, RT, LB, LT, extraAnillas, RM, actividad, lectura, ip])
     post_insert_count = g.db.execute('select count(*) from avistamientos;').fetchone()[0]
-    if post_insert_count-pre_insert_count == 1:
-        flash("Gracias, tu avistamiento ha sido incluido en la base de datos.")
-    else:
+    if post_insert_count-pre_insert_count != 1:
         flash("CUIDADO: Algo ha ido mal en el registro. Por favor, comprueba que los datos del formulario son correctos.")
+    else:
+        g.db.commit()
+        flash("Gracias, tu avistamiento ha sido incluido en la base de datos.")
     
     # CARTODB INSERT
     q = "INSERT INTO avistamientos (ds, ii, _is, momento, the_geom) VALUES ('{0}', '{1}', '{2}', '{3}', ST_SetSRID(ST_Point({4}, {5}), 4326))".format(RT, LB, LT, momento, lng, lat)
     res = cartodb_api(q)
-    g.db.commit()
     
     return actividad, False
 

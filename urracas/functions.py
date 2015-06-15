@@ -229,7 +229,13 @@ def apadrinar():
     ip = request.remote_addr
     nombre = request.form['apadrinado'] if 'apadrinado' in request.form and request.form['apadrinado'] != '' else 'null'
     if nombre != 'null' and request.form['apadrinar'] == 'si':
-        existe = g.db.execute("SELECT count(*) from apadrinamientos where nombre=?", [nombre]).fetchone()[0]
+        
+        # EASTER EGG (HUEVO DE PASCUA) -- Nadie puede registrar el nombre de Tomasa, o será RickRolleado
+        if nombre.lower() == "tomasa":
+            flash('CUIDADO: <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Ese nombre no está disponible.</a>'.decode('utf-8'))
+            return False
+        
+        existe = g.db.execute("SELECT count(*) from apadrinamientos where lower(nombre)=lower(?)", [nombre]).fetchone()[0]
         if existe > 0:
             flash("CUIDADO: Ese nombre ya ha sido elegido para otra urraca. Por favor, elige otro.")
             return False

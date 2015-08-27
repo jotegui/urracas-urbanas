@@ -14,3 +14,5 @@ apikey.py
 # Dev files
 config.py
 *.pyc
+*.sublime*
+node_modules/

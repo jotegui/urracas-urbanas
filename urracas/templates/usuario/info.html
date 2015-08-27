@@ -11,7 +11,7 @@
                     {% if 'metal' in datos and metal==datos['metal'] %}
                 <li role="presentation" class="active"><a href="{{url_for("info")}}/{{metal}}" class="enlaceave" data-toggle="tooltip" data-placement="top" title="Anilla / Derecha Arriba / Izquierda Abajo / Izquierda arriba">{{aves[metal]}}</a></li>
                     {% else %}
-                <li role="presentation"><a href="{{url_for("info")}}/{{metal}}" class="enlaceave" data-toggle="tooltip" data-placement="top" title="Anilla / Derecha Arriba / Izquierda Abajo / Izquierda arriba">{{aves[metal]}}</a></li>
+                <li role="presentation"><a href="{{url_for("info")}}?metal={{metal}}" class="enlaceave" data-toggle="tooltip" data-placement="top" title="Anilla / Derecha Arriba / Izquierda Abajo / Izquierda arriba">{{aves[metal]}}</a></li>
                     {% endif %}
 
                 {% endfor %}

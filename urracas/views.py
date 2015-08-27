@@ -118,12 +118,13 @@ def nidosdormideros():
 
 
 @app.route("/info")
-@app.route("/info/<metal>")
 def info(metal=None):
     registro = f.comprobar_registro()
     if registro is False:
         return redirect(url_for('registro'))
 
+    metal=request.args.get("metal") if "metal" in request.args else None
+    print metal
     aves, metales, datos, mapbox_token = f.extraer_datos(metal)
     
     return render_template('usuario/info.html', metales=metales, aves=aves, datos=datos, mapbox_token=mapbox_token)
